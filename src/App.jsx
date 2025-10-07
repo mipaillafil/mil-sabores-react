@@ -6,18 +6,19 @@ import Home from './components/pages/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Products from './components/pages/Products';
 import Cart from './components/pages/Cart';
+import Contact from './components/pages/Contact';
 
 function App() {
-    return (
+  return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/Productos' element={<Products />}/>
-        
+        <Route path='/Productos' element={<Products />} />
+        <Route path='/Carrito' element={<Cart />} />
+        <Route path='/Contacto' element={<Contact />} />
       </Routes>
     </BrowserRouter>
   );
 }
 
-
-export default App
+export default App;
