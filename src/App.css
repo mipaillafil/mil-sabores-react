@@ -1659,6 +1659,29 @@ nav a.active {
     align-items: center;
 }
 
+.pgta span {
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.respuesta {
+  padding-top: 0.5rem;
+  font-size: 1rem;
+  color: #555;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Opcional: cursor tipo acordeón */
+.pgta {
+  cursor: pointer;
+}
+
 .respuesta {
     color: #B0BEC5;
     display: none;
