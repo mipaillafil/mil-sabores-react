@@ -5,6 +5,7 @@ import './App.css'
 import Home from './components/pages/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Products from './components/pages/Products';
+import Cart from './components/pages/Cart';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/Productos' element={<Products />}/>
+        
       </Routes>
     </BrowserRouter>
   );

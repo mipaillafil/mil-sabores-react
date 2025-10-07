@@ -352,7 +352,7 @@ footer {
 }
 
 .banner {
-    background: linear-gradient(#00000099, #00000099), url(imagenes/torta\ banner.avif);
+    background: linear-gradient(#00000099, #00000099), url(img/torta\ banner.jpg);
     background-size: cover;
     background-position: center;
     height: 250px;
