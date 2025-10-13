@@ -2032,3 +2032,19 @@ nav a.active {
 .promocion-imagen.loaded {
     opacity: 1;
 }
+
+.producto-en-carrito {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+.btn-eliminar {
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
