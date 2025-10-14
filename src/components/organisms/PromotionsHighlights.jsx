@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Promotions() {
+export default function PromotionsHighlights() {
   return (
     <section className="promociones">
       <section className="container">

@@ -75,7 +75,7 @@ nav a:hover {
 }
 
 .banner-index {
-    background: linear-gradient(#00000080, #00000080), url('img/torta\ banner.avif');
+    background: linear-gradient(#00000080, #00000080), url('img/');
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -352,7 +352,7 @@ footer {
 }
 
 .banner {
-    background: linear-gradient(#00000099, #00000099), url(img/torta/banner.jpg);
+    background: linear-gradient(#00000099, #00000099), url(img/torta\ banner.jpg);
     background-size: cover;
     background-position: center;
     height: 250px;

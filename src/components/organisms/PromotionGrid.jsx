@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PromotionCard from "../molecules/PromotionCard";
 
 export default function PromotionsGrid() {
+  const promocionesContainerRef = useRef(null);
+  const [canScroll, setCanScroll] = useState(true);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
   const promociones = [
     {
       badge: "50% OFF",
@@ -58,23 +63,103 @@ export default function PromotionsGrid() {
     },
   ];
 
+  // 🧠 Función para actualizar el estado de los botones
+  const updateButtonStates = () => {
+    const container = promocionesContainerRef.current;
+    if (!container) return;
+
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+    const start = scrollLeft <= 0;
+    const end = scrollLeft >= scrollWidth - clientWidth - 10;
+
+    setAtStart(start);
+    setAtEnd(end);
+  };
+
+  // 🎢 Scroll suave
+  const smoothScroll = (direction) => {
+    if (!canScroll || !promocionesContainerRef.current) return;
+
+    setCanScroll(false);
+    const scrollAmount = promocionesContainerRef.current.clientWidth * 0.8;
+
+    promocionesContainerRef.current.scrollBy({
+      left: direction === "next" ? scrollAmount : -scrollAmount,
+      behavior: "smooth",
+    });
+
+    setTimeout(() => setCanScroll(true), 500);
+  };
+
+  // 🎯 Efectos y listeners
+  useEffect(() => {
+    const container = promocionesContainerRef.current;
+    if (!container) return;
+
+    let timeout;
+
+    const handleScroll = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(updateButtonStates, 100);
+    };
+
+    const handleResize = () => {
+      setTimeout(updateButtonStates, 200);
+    };
+
+    const handleKeydown = (e) => {
+      if (e.key === "ArrowLeft") {
+        smoothScroll("prev");
+        e.preventDefault();
+      } else if (e.key === "ArrowRight") {
+        smoothScroll("next");
+        e.preventDefault();
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("keydown", handleKeydown);
+
+    updateButtonStates(); // Estado inicial
+
+    return () => {
+      container.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [canScroll]);
+
+  // 🧱 Render del componente
   return (
-    <section className="container">
+    <section className={`container promociones-wrapper ${!atStart ? "scroll-start" : ""} ${!atEnd ? "scroll-end" : ""}`}>
       <h2 className="titulo-seccion">Ofertas Destacadas</h2>
-      <div className="promociones-wrapper">
-        <div className="promociones-container">
-          <div className="promociones-grid">
-            {promociones.map((promo, i) => (
-              <PromotionCard key={i} {...promo} />
-            ))}
-          </div>
-          <div className="promociones-navigation">
-            <button className="nav-btn prev-btn" disabled>
-              ←
-            </button>
-            <button className="nav-btn next-btn">→</button>
-          </div>
+
+      <div className="promociones-container" ref={promocionesContainerRef}>
+        <div className="promociones-grid">
+          {promociones.map((promo, i) => (
+            <PromotionCard key={i} {...promo} />
+          ))}
         </div>
+      </div>
+
+      <div className="promociones-navigation">
+        <button
+          className="nav-btn prev-btn"
+          onClick={() => smoothScroll("prev")}
+          disabled={atStart}
+        >
+          ←
+        </button>
+        <button
+          className="nav-btn next-btn"
+          onClick={() => smoothScroll("next")}
+          disabled={atEnd}
+        >
+          →
+        </button>
       </div>
     </section>
   );

@@ -1,19 +1,25 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export default function Banner() {
+export default function Banner({ 
+  title, 
+  subtitle, 
+  buttonText, 
+  buttonLink, 
+  className 
+}) {
   return (
-    <section className="banner-index">
+    <section className={`banner ${className}`}>
       <div className="banner-content">
-        <h1>50 años endulzando momentos</h1>
-        <p>
-          Descubre la tradición y el sabor de la repostería chilena con nuestras
-          deliciosas tortas y postres artesanales
-        </p>
-        <div className="btn-productos">
-          <a href="productos.html">
-            <button>Ver Productos</button>
-          </a>
-        </div>
+        <h1>{title}</h1>
+        <p>{subtitle}</p>
+        {buttonText && buttonLink && (
+          <div className="btn-productos">
+            <Link to={buttonLink}>
+              <button>{buttonText}</button>
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

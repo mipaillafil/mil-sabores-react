@@ -13,7 +13,13 @@ const Blog = () => {
     <>
       <Header />
       <main>
-        <Banner />
+         <Banner
+        className="banner-blog"
+        title="Blog de Repostería"
+        subtitle="Consejos, recetas y noticias de los estudiantes de gastronomía de Duoc UC"
+        buttonText="Volver al inicio"
+        buttonLink="/"
+      />
         <section className="container">
           <BlogFilters />
           <BlogGrid />

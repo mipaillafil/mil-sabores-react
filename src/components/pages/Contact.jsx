@@ -11,7 +11,13 @@ export default function Contact() {
   return (
     <>
       <Header />         
-        <Banner />
+         <Banner
+        className="banner-contacto"
+        title="Contáctanos"
+        subtitle="Estamos aquí para endulzar tus momentos especiales. ¡Escríbenos!"
+        buttonText="Volver al inicio"
+        buttonLink="/"
+      />
         <div className="contacto-container">
             <InfoContact/>
             <ContactForm/>

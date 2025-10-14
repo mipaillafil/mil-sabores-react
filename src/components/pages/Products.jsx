@@ -9,7 +9,14 @@ export default function Products() {
   return (
     <>
       <Header />
-      <Banner />
+      <Banner
+        className="banner-productos"
+        title="Nuestros Productos"
+        subtitle="Explora nuestra amplia variedad de tortas, pasteles y postres hechos con amor"
+        buttonText="Ver Promociones"
+        buttonLink="/promociones"
+      />
+
       <NavCategorias />
 
       <section className="container categoria-productos" id="tortas-cuadradas">
