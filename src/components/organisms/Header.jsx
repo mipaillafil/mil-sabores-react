@@ -17,7 +17,7 @@ export default function Header() {
             <Link to="/contacto">Contacto</Link>
           </nav>
           <div className="btn-sesion">
-            <Link to="/inicio-sesion">
+            <Link to="/Inicio-Sesion">
               <button>Iniciar Sesión</button>
             </Link>
           </div>

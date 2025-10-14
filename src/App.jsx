@@ -9,6 +9,8 @@ import Cart from './components/pages/Cart';
 import Contact from './components/pages/Contact';
 import Blog from './components/pages/Blog';
 import Promotions from './components/pages/Promotions';
+import LogIn from './components/pages/LogIn';
+import SignUp from './components/pages/SignUp';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path='/Contacto' element={<Contact />} />
         <Route path='/Blog' element={<Blog/>} />
         <Route path='/Promociones' element={<Promotions/>} />
+        <Route path='/Inicio-Sesion' element={<LogIn/>} />
+        <Route path='/Registrarse' element={<SignUp/>} />
       </Routes>
     </BrowserRouter>
   );
