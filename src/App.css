@@ -352,7 +352,7 @@ footer {
 }
 
 .banner {
-    background: linear-gradient(#00000099, #00000099), url(img/torta\ banner.jpg);
+    background: linear-gradient(#00000099, #00000099), url(img/torta/banner.jpg);
     background-size: cover;
     background-position: center;
     height: 250px;
@@ -1762,27 +1762,27 @@ nav a.active {
 }
 
 .descuento-mayores {
-    background-image: url('imagenes/persona\ mayor.jpg');
+    background-image: url('img/persona\ mayor.jpg');
 }
 
 .descuento-registro {
-    background-image: url('imagenes/10porcierto.jpg');
+    background-image: url('img/10porcierto.jpg');
 }
 
 .torta-cumpleanos {
-    background-image: url('imagenes/chef\ torta\ mano.webp');
+    background-image: url('img/chef\ torta\ mano.webp');
 }
 
 .oferta-2x1 {
-    background-image: url('imagenes/2x1cupcakesV2.jpg');
+    background-image: url('img/2x1cupcakesV2.jpg');
 }
 
 .descuento-vegano {
-    background-image: url('imagenes/reposteria\ vegana.jpg');
+    background-image: url('img/reposteria\ vegana.jpg');
 }
 
 .envio-gratis {
-    background-image: url('imagenes/delivery.png');
+    background-image: url('img/delivery.png');
 }
 
 .promocion-content {

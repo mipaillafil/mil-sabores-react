@@ -8,6 +8,7 @@ import Products from './components/pages/Products';
 import Cart from './components/pages/Cart';
 import Contact from './components/pages/Contact';
 import Blog from './components/pages/Blog';
+import Promotions from './components/pages/Promotions';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/Carrito' element={<Cart />} />
         <Route path='/Contacto' element={<Contact />} />
         <Route path='/Blog' element={<Blog/>} />
+        <Route path='/Promociones' element={<Promotions/>} />
       </Routes>
     </BrowserRouter>
   );
