@@ -8,7 +8,7 @@ export default function LogIn() {
       <div className="login-container">
         <div className="login-header">
           <div className="logo">
-            <img src="/imagenes/logo.png" alt="Logo Pastelería Mil Sabores" />
+            <img src="/img/logo.png" alt="Logo Pastelería Mil Sabores" />
           </div>
           <h1>Pastelería Mil Sabores</h1>
           <p>Ingresa tus credenciales para acceder</p>

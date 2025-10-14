@@ -88,7 +88,7 @@ export default function SignUp() {
     <div className="registro-container">
       <div className="registro-header">
         <div className="logo">
-          <img src="/imagenes/logo.png" alt="Logo Pastelería Mil Sabores" />
+          <img src="/img/logo.png" alt="Logo Pastelería Mil Sabores" />
         </div>
         <h1>Crear Cuenta</h1>
         <p>Únete a nuestra comunidad dulce y descubre promociones exclusivas</p>
