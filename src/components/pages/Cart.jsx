@@ -58,7 +58,9 @@ export default function Cart() {
             ) : (
               products.map((item, index) => (
                 <div key={index} className="producto-en-carrito">
-                  <div className={`mini-img ${item.imgClass}`}></div>
+                  <div className="mini-img">
+                    <img src={item.img} alt={item.titulo} />
+                  </div>
                   <div className="info-producto">
                     <h3>{item.titulo}</h3>
                     <p>{item.descripcion}</p>

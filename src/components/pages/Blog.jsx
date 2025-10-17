@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Header from "../organisms/Header";
 import Banner from "../organisms/Banner";
 import BlogFilters from "../organisms/BlogFilters";
 import BlogGrid from "../organisms/BlogGrid";
-import NewsletterForm from "../molecules/NewsLetterForm";
+import Newsletter from "../organisms/Newsletter";
 import Footer from "../organisms/Footer";
 
 
 const Blog = () => {
+  const [filter, setFilter] = useState("all"); // este es el filtro global
   return (
     <>
       <Header />
@@ -21,10 +22,11 @@ const Blog = () => {
         buttonLink="/"
       />
         <section className="container">
-          <BlogFilters />
-          <BlogGrid />
+          <BlogFilters activeFilter={filter} onFilterChange={setFilter}/>
+          <BlogGrid activeFilter={filter}/>
         </section>
-        <NewsletterForm />
+        <Newsletter />
+        {/*<NewsletterForm />*/} {/*este era el del problema XD*/}
       </main>
       <Footer />
     </>
