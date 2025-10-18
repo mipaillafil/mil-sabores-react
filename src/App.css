@@ -591,7 +591,7 @@ footer {
 
 /* Sin Gluten */
 .brownie-sin-gluten {
-    background-image: url('img/brownie.avif');
+    background-image: url('img/brownie.jpg');
 }
 
 .pan-sin-gluten {
@@ -613,7 +613,7 @@ footer {
 }
 
 .torta-boda {
-    background-image: url('img/torta\ boda.avif');
+    background-image: url('img/torta boda.jpg');
 }
 
 
@@ -2359,5 +2359,29 @@ footer {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/*botones + / - en cart*/
+
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.cantidad-control button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cantidad-control span {
+  min-width: 20px;
+  text-align: center;
+  display: inline-block;
 }
 

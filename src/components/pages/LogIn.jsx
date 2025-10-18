@@ -14,7 +14,7 @@ export default function LogIn() {
           <p>Ingresa tus credenciales para acceder</p>
         </div>
 
-        <form className="login-form">
+        <form className="login-form" data-testid="login-form">
           <div className="form-group">
             <label htmlFor="email" className="form-label">
               Correo
