@@ -4,7 +4,7 @@ export default function ContactForm() {
   return (
     <div className="form-contacto">
       <h2>Envíanos un Mensaje</h2>
-      <form id="contactoForm">
+      <form id="contactoForm" aria-label="contactForm">
         <div className="form-row">
           <label htmlFor="nombre">Nombre completo *</label>
           <input

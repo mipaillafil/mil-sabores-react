@@ -21,16 +21,16 @@ export default function Footer() {
             <h3>Enlaces Rápidos</h3>
             <ul>
               <li>
-                <a href="index.html">Inicio</a>
+                <a href="/">Inicio</a>
               </li>
               <li>
-                <a href="productos.html">Productos</a>
+                <a href="/productos">Productos</a>
               </li>
               <li>
-                <a href="promociones.html">Promociones</a>
+                <a href="/promociones">Promociones</a>
               </li>
               <li>
-                <a href="blog.html">Blog</a>
+                <a href="/blog">Blog</a>
               </li>
             </ul>
           </div>

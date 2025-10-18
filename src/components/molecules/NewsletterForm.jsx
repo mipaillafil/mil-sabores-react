@@ -2,7 +2,7 @@ import React from "react";
 
 const NewsletterForm = () => {
   return (
-    <form className="newsletter-form">
+    <form className="newsletter-form" data-testid="newsletter-form">
       <input type="email" placeholder="Tu correo electrónico" required />
       <button type="submit">Suscribirme</button>
     </form>
