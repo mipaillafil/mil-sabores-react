@@ -26,7 +26,6 @@ const Blog = () => {
           <BlogGrid activeFilter={filter}/>
         </section>
         <Newsletter />
-        {/*<NewsletterForm />*/} {/*este era el del problema XD*/}
       </main>
       <Footer />
     </>

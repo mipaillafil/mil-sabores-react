@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../organisms/Header';
 import Footer from '../organisms/Footer';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   const [products, setProducts] = useState([]);
@@ -52,6 +53,12 @@ export default function Cart() {
 
   const formatCLP = (num) =>
     num.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+
+const navigate = useNavigate(); 
+
+const irAProcesarCompra = () => {
+    navigate('/Procesar-Compra');
+};
 
   return (
     <>
@@ -150,7 +157,7 @@ export default function Cart() {
               </div>
             </div>
 
-            <button className="btn-pago">Proceder al Pago</button>
+            <button className="btn-pago" onClick={irAProcesarCompra}>Proceder al Pago</button>
             <a href="/productos" className="continuar-compra">
               ← Seguir comprando
             </a>

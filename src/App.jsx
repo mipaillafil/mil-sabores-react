@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Home from './components/pages/Home';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -11,6 +8,8 @@ import Blog from './components/pages/Blog';
 import Promotions from './components/pages/Promotions';
 import LogIn from './components/pages/LogIn';
 import SignUp from './components/pages/SignUp';
+import PaymentProcess from './components/pages/PaymentProcess';
+
 
 function App() {
   return (
@@ -24,6 +23,7 @@ function App() {
         <Route path='/Promociones' element={<Promotions/>} />
         <Route path='/Inicio-Sesion' element={<LogIn/>} />
         <Route path='/Registrarse' element={<SignUp/>} />
+        <Route path='/Procesar-Compra' element={<PaymentProcess/>} />
       </Routes>
     </BrowserRouter>
   );
