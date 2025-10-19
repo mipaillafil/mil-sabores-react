@@ -17,8 +17,7 @@ export default function Header() {
             <Link to="/contacto">Contacto</Link>
           </nav>
           <div className="carrito-icono">
-                <Link to="/Carrito">🛒</Link>
-                <span className="carrito-contador"></span>
+              <Link to="/Carrito">🛒</Link>
             </div>
           <div className="btn-sesion">
             <Link to="/Inicio-Sesion">

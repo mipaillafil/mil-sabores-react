@@ -27,6 +27,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    height: 110px;
 }
 
 .header-content {
@@ -34,12 +35,14 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
+    height: 110px;
+    align-items: center;
 }
 
 header img {
-    height: 3rem;
-    border-radius: 50%;
+    height: 80px; /* Aumentado para que sea visible en 110px de altura */
     margin: 1vh;
+    object-fit: contain;
 }
 
 nav {
@@ -82,12 +85,17 @@ nav a:hover {
 
 /* Tablets (768px - 1024px) */
 @media screen and (max-width: 1024px) {
+    header {
+        height: 100px; /* Reduce ligeramente */
+    }
+    
     .header-content {
+        height: 100px;
         padding: 8px 0;
     }
     
     header img {
-        height: 2.5rem;
+        height: 70px; /* Reduce proporcionalmente */
     }
     
     nav a {
@@ -103,18 +111,18 @@ nav a:hover {
 
 /* Móviles grandes (576px - 768px) */
 @media screen and (max-width: 768px) {
-    .container {
-        width: 95%;
-        padding: 0 10px;
+    header {
+        height: 90px; /* Reduce más para móviles */
     }
     
     .header-content {
+        height: 90px;
         flex-wrap: wrap;
         padding: 5px 0;
     }
     
     header img {
-        height: 2.2rem;
+        height: 60px;
         margin: 0.5vh;
     }
     
@@ -144,17 +152,19 @@ nav a:hover {
 
 /* Móviles pequeños (hasta 576px) */
 @media screen and (max-width: 576px) {
-    body {
-        font-size: 14px;
+    header {
+        height: 80px; /* Altura mínima para móviles */
     }
     
     .header-content {
+        height: 80px;
         flex-direction: column;
         padding: 5px 0;
+        justify-content: center;
     }
     
     header img {
-        height: 2rem;
+        height: 50px;
         margin-bottom: 5px;
     }
     
@@ -188,9 +198,16 @@ nav a:hover {
 
 /* Móviles muy pequeños (hasta 360px) */
 @media screen and (max-width: 360px) {
-    .container {
-        width: 100%;
-        padding: 0 5px;
+    header {
+        height: 70px; /* Altura muy compacta */
+    }
+    
+    .header-content {
+        height: 70px;
+    }
+    
+    header img {
+        height: 40px;
     }
     
     nav {
@@ -210,7 +227,20 @@ nav a:hover {
     }
 }
 
+/* Dispositivos extra pequeños (hasta 320px) */
 @media screen and (max-width: 320px) {
+    header {
+        height: 65px; /* Altura mínima */
+    }
+    
+    .header-content {
+        height: 65px;
+    }
+    
+    header img {
+        height: 35px;
+    }
+    
     nav a {
         font-size: 0.7rem;
         margin: 0 2px;
@@ -1025,7 +1055,7 @@ footer {
 }
 
 .login-header .logo img {
-    height: 80px;
+    height: 4rem;
     border-radius: 50%;
 }
 
@@ -1259,18 +1289,18 @@ footer {
     margin: 0 auto 20px;
     background: white;
     border-radius: 50%;
-    padding: 10px;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .logo img {
     width: 80%;
     height: 100%;
     object-fit: contain;
-    border-radius: 10%;
+    border-radius: 50%;
+    margin-top: 5px;
 }
 
 .registro-header h1 {

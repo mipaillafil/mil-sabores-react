@@ -19,7 +19,6 @@ export default function SignUp() {
     newsletter: false,
   });
 
-  // 🧮 Evaluar fuerza de la contraseña
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
@@ -37,7 +36,6 @@ export default function SignUp() {
     else setStrength("strong");
   };
 
-  // 📋 Control de inputs
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData({
@@ -46,7 +44,6 @@ export default function SignUp() {
     });
   };
 
-  // ✅ Validación del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = [];
@@ -64,6 +61,7 @@ export default function SignUp() {
 
     if (newErrors.length > 0) {
       setErrores(newErrors);
+      setTimeout(() => setErrores([]), 5000);
     } else {
       alert("¡Cuenta creada exitosamente! Bienvenido/a a Pastelería Mil Sabores");
       setFormData({
@@ -80,7 +78,6 @@ export default function SignUp() {
       setPassword("");
       setStrength("");
       setPromoVisible(false);
-      setErrores([]);
     }
   };
 
@@ -104,8 +101,6 @@ export default function SignUp() {
             placeholder="juan@mail.com"
             value={formData.mail}
             onChange={handleChange}
-            required
-            autoComplete="email"
           />
           <div className="form-note">Usaremos este email para contactarte</div>
         </div>
@@ -119,8 +114,6 @@ export default function SignUp() {
             placeholder="Juan Pérez"
             value={formData.nombre}
             onChange={handleChange}
-            required
-            autoComplete="name"
           />
         </div>
 
@@ -133,8 +126,6 @@ export default function SignUp() {
             placeholder="juanito"
             value={formData.usuario}
             onChange={handleChange}
-            required
-            autoComplete="username"
           />
           <div className="form-note">Este será tu nombre de usuario único</div>
         </div>
@@ -147,7 +138,6 @@ export default function SignUp() {
             id="cumpleanios"
             value={formData.cumpleanios}
             onChange={handleChange}
-            autoComplete="bday"
           />
           <div className="form-note">
             ¡Te enviaremos una sorpresa en tu cumpleaños!
@@ -163,17 +153,9 @@ export default function SignUp() {
             placeholder="••••••••"
             value={password}
             onChange={handlePasswordChange}
-            required
-            autoComplete="new-password"
           />
           <div className="password-strength">
-            <div className={`password-strength-bar ${strength}`}>
-              <div className="strength-text">
-                {strength === "weak" && "Débil"}
-                {strength === "medium" && "Media"}
-                {strength === "strong" && "Fuerte"}
-              </div>
-            </div>
+            <div className={`password-strength-bar ${strength}`}></div>
           </div>
           <div className="form-note">
             Mínimo 8 caracteres con letras y números
@@ -189,8 +171,6 @@ export default function SignUp() {
             placeholder="••••••••"
             value={formData.clave2}
             onChange={handleChange}
-            required
-            autoComplete="new-password"
           />
         </div>
 
@@ -214,7 +194,6 @@ export default function SignUp() {
               placeholder="Ej: FELICES50"
               value={formData.promo}
               onChange={handleChange}
-              autoComplete="off"
             />
             <div className="form-note">
               Códigos válidos: FELICES50, ESTUDIANTE, MAYORES50
@@ -229,7 +208,6 @@ export default function SignUp() {
             id="tyc"
             checked={formData.tyc}
             onChange={handleChange}
-            required
           />
           <span className="checkbox-text">
             Acepto los <Link to="#">Términos y Condiciones</Link> y la{" "}
@@ -269,7 +247,6 @@ export default function SignUp() {
               setPassword("");
               setStrength("");
               setPromoVisible(false);
-              setErrores([]);
             }}
           >
             Limpiar
@@ -281,13 +258,10 @@ export default function SignUp() {
       </form>
 
       {errores.length > 0 && (
-        <div className="errores-container">
-          <h3>Por favor corrige los siguientes errores:</h3>
-          <ul>
-            {errores.map((error, index) => (
-              <li key={index}>{error}</li>
-            ))}
-          </ul>
+        <div id="errores">
+          {errores.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))}
         </div>
       )}
 
