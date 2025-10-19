@@ -18,7 +18,7 @@ export default function Header() {
           </nav>
           <div className="carrito-icono">
                 <Link to="/Carrito">🛒</Link>
-                <span class="carrito-contador"></span>
+                <span className="carrito-contador"></span>
             </div>
           <div className="btn-sesion">
             <Link to="/Inicio-Sesion">
