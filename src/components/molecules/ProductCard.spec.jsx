@@ -16,7 +16,8 @@ describe('Product component', ()=>{
         imgClass: "torta-cuadrada-chocolate",
         titulo: "Torta Cuadrada de Chocolate",
         descripcion: "Deliciosa torta de chocolate con capas de ganache y un toque de avellanas. Personalizable con mensajes especiales.",
-        precio: "$45.000"
+        precio: "$45.000",
+        img: "img/torta-chocolate.jpg"
     }
 
     it('muestra producto correctamente', ()=>{
