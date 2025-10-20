@@ -19,7 +19,6 @@ export default function SignUp() {
     newsletter: false,
   });
 
-  // 🧮 Evaluar fuerza de la contraseña
   const handlePasswordChange = (e) => {
     const value = e.target.value;
     setPassword(value);
@@ -37,7 +36,6 @@ export default function SignUp() {
     else setStrength("strong");
   };
 
-  // 📋 Control de inputs
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData({
@@ -46,7 +44,6 @@ export default function SignUp() {
     });
   };
 
-  // ✅ Validación del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = [];

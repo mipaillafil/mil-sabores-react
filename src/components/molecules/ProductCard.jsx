@@ -1,6 +1,5 @@
 import React from "react";
 
-
 export default function ProductCard(props){
   const{codigo, titulo, precio, descripcion, imgClass}=props
 
@@ -35,7 +34,6 @@ export default function ProductCard(props){
     console.log(products)
   }
 
-
   return (
     <div className="producto-card">
       <div className={`producto-img ${imgClass}`}></div>
@@ -49,3 +47,5 @@ export default function ProductCard(props){
     </div>
   );
 }
+
+
