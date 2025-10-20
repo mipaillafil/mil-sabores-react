@@ -3,6 +3,9 @@ import React from "react";
 export default function ProductCard(props){
   const{codigo, titulo, precio, descripcion, imgClass}=props
 
+
+  
+  /*para cargar imagenes*/
    const imgMap = {
     'torta-cuadrada-chocolate': 'img/torta-chocolate.jpg',
     'torta-cuadrada-frutas': 'img/torta cuadrada.jpg',
