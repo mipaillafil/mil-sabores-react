@@ -1970,8 +1970,8 @@ footer {
 }
 
 .img-item {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 10px;
     overflow: hidden;
     margin: 15px;
@@ -3488,10 +3488,11 @@ footer {
 
 .producto-en-carrito {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     border-bottom: 1px solid #ddd;
     padding: 10px 0;
+    margin-bottom: 20px;
 }
 
 .btn-eliminar {
@@ -4287,6 +4288,7 @@ footer {
   }
 }
 
+<<<<<<< HEAD
 /* ESTILOS PARA CAMPOS OBLIGATORIOS Y VALIDACIÓN */
 .payment-form__label::after {
   content: " *";
@@ -4377,4 +4379,20 @@ footer {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+=======
+
+/*imagenes carrito*/
+.mini-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+
+.info-producto {
+  flex-grow: 1;
+  padding-top: 5px;
+>>>>>>> 3b018a8dce12bd5382783349c652a13f93b683a2
 }
