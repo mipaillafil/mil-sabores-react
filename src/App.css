@@ -4287,8 +4287,6 @@ footer {
     text-align: center;
   }
 }
-
-<<<<<<< HEAD
 /* ESTILOS PARA CAMPOS OBLIGATORIOS Y VALIDACIÓN */
 .payment-form__label::after {
   content: " *";
@@ -4379,7 +4377,8 @@ footer {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-=======
+
+}
 
 /*imagenes carrito*/
 .mini-img {
@@ -4394,5 +4393,4 @@ footer {
 .info-producto {
   flex-grow: 1;
   padding-top: 5px;
->>>>>>> 3b018a8dce12bd5382783349c652a13f93b683a2
 }
