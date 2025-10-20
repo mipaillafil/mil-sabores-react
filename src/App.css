@@ -1390,33 +1390,74 @@ footer {
     box-shadow: 0 5px 15px rgba(255, 182, 193, 0.4);
 }
 
+.checkbox-container input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #8B4513;
+    margin-top: 3px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+/* CHECKBOX PERSONALIZADO */
 .checkbox-container {
     display: flex;
     align-items: flex-start;
     gap: 12px;
     cursor: pointer;
     margin-bottom: 15px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 8px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
 }
 
 .checkbox-container:hover {
     background-color: #FFF9F2;
+    border-color: #E8D6C3;
 }
 
+/* Ocultar el checkbox nativo */
 .checkbox-container input[type="checkbox"] {
+    display: none;
+}
+
+/* Checkbox personalizado */
+.checkbox-custom {
     width: 20px;
     height: 20px;
-    accent-color: #8B4513;
-    margin-top: 2px;
+    border: 2px solid #E8D6C3;
+    border-radius: 4px;
+    background: white;
+    position: relative;
     flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Checkbox cuando está checked */
+.checkbox-container input[type="checkbox"]:checked + .checkbox-custom {
+    background: #8B4513;
+    border-color: #8B4513;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .checkbox-text {
     font-size: 0.9rem;
     color: #5D4037;
     line-height: 1.4;
+    flex: 1;
 }
 
 .checkbox-text a {
@@ -1428,6 +1469,7 @@ footer {
 
 .checkbox-text a:hover {
     color: #FFC0CB;
+    text-decoration: underline;
 }
 
 .form-buttons {
@@ -1530,7 +1572,7 @@ footer {
     padding: 20px;
     z-index: 1000;
     box-shadow: 0 10px 30px rgba(255, 71, 87, 0.2);
-    display: none;
+    display: none; /* ← ESTO ES EL PROBLEMA */
     animation: slideDown 0.5s ease-out;
     max-width: 400px;
     width: 90%;
@@ -1549,6 +1591,34 @@ footer {
 #errores p::before {
     content: "⚠️";
     font-size: 1.1rem;
+}
+
+/* POR ESTE */
+.error-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 2px solid #ff4757;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(255, 71, 87, 0.2);
+    /* QUITAMOS display: none */
+    animation: slideDown 0.5s ease-out;
+    max-width: 400px;
+    width: 90%;
+}
+
+.error-message p {
+    color: #e74c3c;
+    font-weight: 600;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
 }
 
 @keyframes slideDown {
@@ -4215,4 +4285,96 @@ footer {
     flex-direction: column;
     text-align: center;
   }
+}
+
+/* ESTILOS PARA CAMPOS OBLIGATORIOS Y VALIDACIÓN */
+.payment-form__label::after {
+  content: " *";
+  color: #e74c3c;
+}
+
+.payment-form__input--error {
+  border-color: #e74c3c !important;
+  background-color: #fdf2f2 !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.payment-form__input--valid {
+  border-color: #2ed573 !important;
+  background-color: #f0fff4 !important;
+}
+
+.payment-form__error {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+/* Indicador visual de campo obligatorio */
+.payment-form__input:required {
+  border-left: 3px solid #3498db;
+}
+
+.payment-form__input:required:invalid:not(:focus) {
+  border-left-color: #e74c3c;
+}
+
+.payment-form__input:required:valid {
+  border-left-color: #2ed573;
+}
+
+/* Estilo para campos cuando están en foco */
+.payment-form__input:focus {
+  outline: none;
+  border-color: #8B4513;
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+/* Mensaje de estado del formulario */
+.payment-form__status {
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.payment-form__status--error {
+  background-color: #fdf2f2;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+
+.payment-form__status--success {
+  background-color: #f0fff4;
+  border: 1px solid #2ed573;
+  color: #2ed573;
+}
+
+/* Loading state para procesamiento */
+.payment-form__processing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  background: #FFF9F2;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.payment-form__spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #E8D6C3;
+  border-top: 2px solid #8B4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
