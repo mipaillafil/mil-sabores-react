@@ -1,83 +1,139 @@
 // components/AdminProfile.js
 import React, { useState, useEffect } from 'react';
+import './AdminProfile.css';
 
 const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [stats, setStats] = useState({
-    totalRecipes: 0,
-    totalUsers: 0,
     totalOrders: 0,
+    totalUsers: 0,
     totalProducts: 0,
-    pendingReviews: 0,
     pendingOrders: 0,
-    todayRecipes: 0,
-    revenue: 0
+    todayRevenue: 0,
+    monthlyRevenue: 0,
+    birthdayStudents: 0
   });
 
-  // Datos de ejemplo
-  const [recipes, setRecipes] = useState([]);
-  const [users, setUsers] = useState([]);
+  // Datos específicos para Pastelería Mil Sabores
   const [orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     loadData();
   }, []);
 
   const loadData = async () => {
-    // Simular carga de datos
-    setRecipes([
-      { id: 1, name: "Paella Valenciana", author: "Juan Pérez", status: "aprobado", date: "2024-01-15", category: "Platos Principales" },
-      { id: 2, name: "Tacos al Pastor", author: "María García", status: "pendiente", date: "2024-01-16", category: "Platos Principales" },
-      { id: 3, name: "Sushi Casero", author: "Carlos López", status: "rechazado", date: "2024-01-14", category: "Internacional" }
-    ]);
+    // Categorías según el documento
+    const categoriesData = [
+      'Tortas Cuadradas', 'Tortas Circulares', 'Postres Individuales',
+      'Productos Sin Azúcar', 'Pastelería Tradicional', 'Productos Sin Gluten',
+      'Productos Vegana', 'Tortas Especiales'
+    ];
+    setCategories(categoriesData);
 
-    setUsers([
-      { id: 1, name: "Ana Martínez", email: "ana@email.com", joinDate: "2024-01-10", status: "activo", role: "user", recipes: 5 },
-      { id: 2, name: "Luis Rodríguez", email: "luis@email.com", joinDate: "2024-01-12", status: "activo", role: "user", recipes: 3 },
-      { id: 3, name: "Chef Profesional", email: "chef@email.com", joinDate: "2024-01-08", status: "activo", role: "vendedor", recipes: 0}
-    ]);
+    // Productos según la tabla del documento
+    const productsData = [
+      { id: 'TC001', name: 'Torta Cuadrada de Chocolate', category: 'Tortas Cuadradas', price: 45000, stock: 15, status: 'active' },
+      { id: 'TC002', name: 'Torta Cuadrada de Frutas', category: 'Tortas Cuadradas', price: 50000, stock: 12, status: 'active' },
+      { id: 'TT001', name: 'Torta Circular de Vainilla', category: 'Tortas Circulares', price: 40000, stock: 8, status: 'active' },
+      { id: 'TT002', name: 'Torta Circular de Manjar', category: 'Tortas Circulares', price: 42000, stock: 10, status: 'active' },
+      { id: 'PI001', name: 'Mousse de Chocolate', category: 'Postres Individuales', price: 5000, stock: 50, status: 'active' },
+      { id: 'PI002', name: 'Tiramisú Clásico', category: 'Postres Individuales', price: 5500, stock: 45, status: 'active' },
+      { id: 'PSA001', name: 'Torta Sin Azúcar de Naranja', category: 'Productos Sin Azúcar', price: 48000, stock: 6, status: 'active' },
+      { id: 'PSA002', name: 'Cheesecake Sin Azúcar', category: 'Productos Sin Azúcar', price: 47000, stock: 7, status: 'active' },
+      { id: 'PT001', name: 'Empanada de Manzana', category: 'Pastelería Tradicional', price: 3000, stock: 100, status: 'active' },
+      { id: 'PT002', name: 'Tarta de Santiago', category: 'Pastelería Tradicional', price: 6000, stock: 30, status: 'active' },
+      { id: 'PG001', name: 'Brownie Sin Gluten', category: 'Productos Sin Gluten', price: 4000, stock: 40, status: 'active' },
+      { id: 'PG002', name: 'Pan Sin Gluten', category: 'Productos Sin Gluten', price: 3500, stock: 25, status: 'active' },
+      { id: 'PV001', name: 'Torta Vegana de Chocolate', category: 'Productos Vegana', price: 50000, stock: 5, status: 'active' },
+      { id: 'PV002', name: 'Galletas Veganas de Avena', category: 'Productos Vegana', price: 4500, stock: 60, status: 'active' },
+      { id: 'TE001', name: 'Torta Especial de Cumpleaños', category: 'Tortas Especiales', price: 55000, stock: 8, status: 'active' },
+      { id: 'TE002', name: 'Torta Especial de Boda', category: 'Tortas Especiales', price: 60000, stock: 3, status: 'active' }
+    ];
+    setProducts(productsData);
 
-    setOrders([
-      { id: 1001, customer: "María González", date: "2024-01-16", status: "pendiente", total: 45.50, items: 3 },
-      { id: 1002, customer: "Carlos Ruiz", date: "2024-01-15", status: "completado", total: 120.75, items: 5 },
-      { id: 1003, customer: "Ana Torres", date: "2024-01-16", status: "procesando", total: 89.99, items: 2 }
-    ]);
+    // Usuarios con descuentos especiales
+    const usersData = [
+      { 
+        id: 1, 
+        name: 'Ana Martínez', 
+        email: 'ana.martinez@duocuc.cl', 
+        joinDate: '2024-01-10', 
+        status: 'activo', 
+        role: 'student',
+        birthday: '2024-03-15',
+        discount: 'Torta gratis en cumpleaños'
+      },
+      { 
+        id: 2, 
+        name: 'Carlos López', 
+        email: 'carlos@email.com', 
+        joinDate: '2024-01-12', 
+        status: 'activo', 
+        role: 'customer',
+        age: 55,
+        discount: '50% (Mayor de 50 años)'
+      },
+      { 
+        id: 3, 
+        name: 'María González', 
+        email: 'maria@email.com', 
+        joinDate: '2024-01-08', 
+        status: 'activo', 
+        role: 'customer',
+        discount: '10% (Código FELICES50)'
+      }
+    ];
+    setUsers(usersData);
 
-    setProducts([
-      { id: 1, name: "Kit de Especias Premium", category: "Utensilios", price: 29.99, stock: 45, status: "active" },
-      { id: 2, name: "Libro de Recetas Tradicionales", category: "Libros", price: 24.99, stock: 12, status: "active" },
-      { id: 3, name: "Aceite de Oliva Extra Virgen", category: "Ingredientes", price: 15.99, stock: 0, status: "out-of-stock" }
-    ]);
+    // Pedidos
+    const ordersData = [
+      { 
+        id: 1001, 
+        customer: 'María González', 
+        date: '2024-01-16', 
+        status: 'pending', 
+        total: 85500, 
+        items: [
+          { product: 'Torta Especial de Cumpleaños', quantity: 1, price: 55000 },
+          { product: 'Mousse de Chocolate', quantity: 3, price: 5000 }
+        ],
+        customization: 'Feliz Cumpleaños María'
+      },
+      { 
+        id: 1002, 
+        customer: 'Carlos Ruiz', 
+        date: '2024-01-15', 
+        status: 'completed', 
+        total: 120750, 
+        items: [
+          { product: 'Torta Especial de Boda', quantity: 1, price: 60000 },
+          { product: 'Tiramisú Clásico', quantity: 5, price: 5500 },
+          { product: 'Galletas Veganas', quantity: 10, price: 4500 }
+        ],
+        customization: 'Felices 25 años de matrimonio'
+      }
+    ];
+    setOrders(ordersData);
 
     setStats({
-      totalRecipes: 156,
-      totalUsers: 89,
       totalOrders: 234,
-      totalProducts: 45,
-      pendingReviews: 5,
+      totalUsers: 89,
+      totalProducts: 16,
       pendingOrders: 8,
-      todayRecipes: 12,
-      revenue: 12560.75
+      todayRevenue: 285000,
+      monthlyRevenue: 12560750,
+      birthdayStudents: 5
     });
   };
 
-  // Funciones para gestionar recetas
-  const handleApproveRecipe = (recipeId) => {
-    setRecipes(recipes.map(recipe => 
-      recipe.id === recipeId ? { ...recipe, status: 'approved' } : recipe
+  // Funciones de gestión
+  const handleUpdateOrderStatus = (orderId, newStatus) => {
+    setOrders(orders.map(order => 
+      order.id === orderId ? { ...order, status: newStatus } : order
     ));
-  };
-
-  const handleRejectRecipe = (recipeId) => {
-    setRecipes(recipes.map(recipe => 
-      recipe.id === recipeId ? { ...recipe, status: 'rejected' } : recipe
-    ));
-  };
-
-  // Funciones para gestionar usuarios
-  const handleDeleteUser = (userId) => {
-    setUsers(users.filter(user => user.id !== userId));
   };
 
   const handleUpdateUserRole = (userId, newRole) => {
@@ -86,185 +142,134 @@ const AdminProfile = () => {
     ));
   };
 
-  // Funciones para gestionar pedidos
-  const handleUpdateOrderStatus = (orderId, newStatus) => {
-    setOrders(orders.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
-  };
-
-  // Funciones para gestionar productos
-  const handleAddProduct = (newProduct) => {
-    setProducts([...products, { ...newProduct, id: Date.now() }]);
-  };
-
   const handleUpdateProduct = (productId, updatedProduct) => {
     setProducts(products.map(product => 
       product.id === productId ? { ...product, ...updatedProduct } : product
     ));
   };
 
-  const handleDeleteProduct = (productId) => {
-    setProducts(products.filter(product => product.id !== productId));
+  const handleAddProduct = (newProduct) => {
+    setProducts([...products, { ...newProduct, id: `P${Date.now()}` }]);
   };
 
   return (
     <div className="admin-profile">
       <div className="admin-header">
-        <h1>Panel de Administración - Mil Sabores</h1>
+        <h1>🍰 Panel de Administración</h1>
         <div className="admin-stats">
           <div className="stat-card primary">
-            <h3>Total Recetas</h3>
-            <p className="stat-number">{stats.totalRecipes}</p>
-            <span className="stat-change">+{stats.todayRecipes} hoy</span>
-          </div>
-          <div className="stat-card secondary">
-            <h3>Usuarios Registrados</h3>
-            <p className="stat-number">{stats.totalUsers}</p>
-            <span className="stat-change">+12 este mes</span>
-          </div>
-          <div className="stat-card accent">
-            <h3>Pedidos Totales</h3>
+            <h3>📦 Pedidos Totales</h3>
             <p className="stat-number">{stats.totalOrders}</p>
             <span className="stat-change">{stats.pendingOrders} pendientes</span>
           </div>
-          <div className="stat-card success">
-            <h3>Productos</h3>
+          <div className="stat-card secondary">
+            <h3>👥 Usuarios Registrados</h3>
+            <p className="stat-number">{stats.totalUsers}</p>
+            <span className="stat-change">{stats.birthdayStudents} estudiantes Duoc</span>
+          </div>
+          <div className="stat-card accent">
+            <h3>🍪 Productos</h3>
             <p className="stat-number">{stats.totalProducts}</p>
-            <span className="stat-change">En stock</span>
+            <span className="stat-change">8 categorías</span>
           </div>
           <div className="stat-card revenue">
-            <h3>Ingresos</h3>
-            <p className="stat-number">${stats.revenue.toLocaleString()}</p>
-            <span className="stat-change">Total</span>
+            <h3>💰 Ingresos Mensuales</h3>
+            <p className="stat-number">${stats.monthlyRevenue.toLocaleString('es-CL')}</p>
+            <span className="stat-change">CLP</span>
           </div>
         </div>
       </div>
 
       <div className="admin-content">
         <div className="admin-sidebar">
-          <button 
-            className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
-          >
+          <button className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
             📊 Dashboard
           </button>
-          <button 
-            className={`tab-button ${activeTab === 'recipes' ? 'active' : ''}`}
-            onClick={() => setActiveTab('recipes')}
-          >
-            📝 Gestión de Recetas
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'users' ? 'active' : ''}`}
-            onClick={() => setActiveTab('users')}
-          >
-            👥 Gestión de Usuarios
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'orders' ? 'active' : ''}`}
-            onClick={() => setActiveTab('orders')}
-          >
+          <button className={`tab-button ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
             🛒 Gestión de Pedidos
           </button>
-          <button 
-            className={`tab-button ${activeTab === 'products' ? 'active' : ''}`}
-            onClick={() => setActiveTab('products')}
-          >
-            📦 Gestión de Productos
+          <button className={`tab-button ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}>
+            🍰 Gestión de Productos
           </button>
-          <button 
-            className={`tab-button ${activeTab === 'categories' ? 'active' : ''}`}
-            onClick={() => setActiveTab('categories')}
-          >
+          <button className={`tab-button ${activeTab === 'users' ? 'active' : ''}`} onClick={() => setActiveTab('users')}>
+            👥 Gestión de Usuarios
+          </button>
+          <button className={`tab-button ${activeTab === 'categories' ? 'active' : ''}`} onClick={() => setActiveTab('categories')}>
             🏷️ Categorías
+          </button>
+          <button className={`tab-button ${activeTab === 'discounts' ? 'active' : ''}`} onClick={() => setActiveTab('discounts')}>
+            🎫 Sistema de Descuentos
           </button>
         </div>
 
         <div className="admin-main">
-          {activeTab === 'dashboard' && <DashboardTab stats={stats} />}
-          {activeTab === 'recipes' && (
-            <RecipesTab 
-              recipes={recipes} 
-              onApprove={handleApproveRecipe}
-              onReject={handleRejectRecipe}
-            />
-          )}
-          {activeTab === 'users' && (
-            <UsersTab 
-              users={users} 
-              onDelete={handleDeleteUser}
-              onUpdateRole={handleUpdateUserRole}
-            />
-          )}
-          {activeTab === 'orders' && (
-            <OrdersTab 
-              orders={orders}
-              onUpdateStatus={handleUpdateOrderStatus}
-            />
-          )}
-          {activeTab === 'products' && (
-            <ProductsTab 
-              products={products}
-              onAdd={handleAddProduct}
-              onUpdate={handleUpdateProduct}
-              onDelete={handleDeleteProduct}
-            />
-          )}
-          {activeTab === 'categories' && <CategoriesTab />}
+          {activeTab === 'dashboard' && <DashboardTab stats={stats} orders={orders} />}
+          {activeTab === 'orders' && <OrdersTab orders={orders} onUpdateStatus={handleUpdateOrderStatus} />}
+          {activeTab === 'products' && <ProductsTab products={products} onUpdate={handleUpdateProduct} onAdd={handleAddProduct} />}
+          {activeTab === 'users' && <UsersTab users={users} onUpdateRole={handleUpdateUserRole} />}
+          {activeTab === 'categories' && <CategoriesTab categories={categories} products={products} />}
+          {activeTab === 'discounts' && <DiscountsTab users={users} />}
         </div>
       </div>
     </div>
   );
 };
 
-// Componente Dashboard
-const DashboardTab = ({ stats }) => (
+// Componente Dashboard Específico
+const DashboardTab = ({ stats, orders }) => (
   <div className="tab-content">
-    <h2>Resumen General</h2>
+    <h2>📊 Resumen General - Pastelería Mil Sabores</h2>
     <div className="dashboard-grid">
       <div className="dashboard-card">
-        <h3>📈 Actividad Reciente</h3>
-        <ul className="activity-list">
-          <li>✅ Nuevo pedido #1004 - $75.50</li>
-          <li>👤 Usuario registrado: Pedro Sánchez</li>
-          <li>📝 Receta aprobada: "Brownies de Chocolate"</li>
-          <li>🛒 Producto agotado: "Aceite de Oliva"</li>
-          <li>⭐ Nueva reseña: "Excelente receta de paella"</li>
-        </ul>
+        <h3>🎂 Pedidos Recientes</h3>
+        <div className="recent-orders">
+          {orders.slice(0, 5).map(order => (
+            <div key={order.id} className="order-item">
+              <span className="order-id">#{order.id}</span>
+              <span className="order-customer">{order.customer}</span>
+              <span className="order-total">${order.total.toLocaleString('es-CL')}</span>
+              <span className={`status-badge status-${order.status}`}>{order.status}</span>
+            </div>
+          ))}
+        </div>
       </div>
+      
       <div className="dashboard-card">
-        <h3>📊 Métricas Clave</h3>
+        <h3>📈 Métricas Clave</h3>
         <div className="metrics">
           <div className="metric-item">
-            <span>Tasa de conversión:</span>
-            <strong>3.2%</strong>
-          </div>
-          <div className="metric-item">
-            <span>Recetas por usuario:</span>
-            <strong>1.8</strong>
-          </div>
-          <div className="metric-item">
             <span>Ticket promedio:</span>
-            <strong>$53.75</strong>
+            <strong>$53.750 CLP</strong>
           </div>
           <div className="metric-item">
-            <span>Satisfacción:</span>
-            <strong>4.7/5</strong>
+            <span>Productos más vendidos:</span>
+            <strong>Tortas Circulares</strong>
+          </div>
+          <div className="metric-item">
+            <span>Descuentos aplicados:</span>
+            <strong>45 este mes</strong>
+          </div>
+          <div className="metric-item">
+            <span>Satisfacción cliente:</span>
+            <strong>4.8/5 ⭐</strong>
           </div>
         </div>
       </div>
+      
       <div className="dashboard-card">
-        <h3>🚨 Alertas y Pendientes</h3>
-        <div className="alerts">
-          <div className="alert-item warning">
-            <strong>5 recetas pendientes de revisión</strong>
+        <h3>🎉 Sistema de Descuentos</h3>
+        <div className="discounts-overview">
+          <div className="discount-item">
+            <strong>👴 50% Mayores de 50 años</strong>
+            <span>12 usuarios activos</span>
           </div>
-          <div className="alert-item info">
-            <strong>8 pedidos pendientes de procesar</strong>
+          <div className="discount-item">
+            <strong>🎓 Torta gratis estudiantes Duoc</strong>
+            <span>5 cumpleaños este mes</span>
           </div>
-          <div className="alert-item error">
-            <strong>3 productos agotados</strong>
+          <div className="discount-item">
+            <strong>🎂 10% Código FELICES50</strong>
+            <span>28 usuarios registrados</span>
           </div>
         </div>
       </div>
@@ -280,29 +285,16 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
     ? orders 
     : orders.filter(order => order.status === filterStatus);
 
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'pendiente': return 'warning';
-      case 'procesando': return 'info';
-      case 'completado': return 'success';
-      case 'cancelado': return 'error';
-      default: return 'pendiente';
-    }
-  };
-
   return (
     <div className="tab-content">
       <div className="tab-header">
-        <h2>Gestión de Pedidos</h2>
+        <h2>🛒 Gestión de Pedidos</h2>
         <div className="filter-controls">
-          <select 
-            value={filterStatus} 
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="filter-select"
-          >
+          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
             <option value="all">Todos los estados</option>
             <option value="pending">Pendientes</option>
-            <option value="processing">En proceso</option>
+            <option value="processing">En preparación</option>
+            <option value="ready">Listo para entrega</option>
             <option value="completed">Completados</option>
             <option value="cancelled">Cancelados</option>
           </select>
@@ -316,7 +308,8 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
               <th>ID Pedido</th>
               <th>Cliente</th>
               <th>Fecha</th>
-              <th>Items</th>
+              <th>Productos</th>
+              <th>Personalización</th>
               <th>Total</th>
               <th>Estado</th>
               <th>Acciones</th>
@@ -328,10 +321,19 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
                 <td>#{order.id}</td>
                 <td>{order.customer}</td>
                 <td>{order.date}</td>
-                <td>{order.items}</td>
-                <td>${order.total}</td>
                 <td>
-                  <span className={`status-badge status-${getStatusColor(order.status)}`}>
+                  <div className="order-items">
+                    {order.items.map((item, index) => (
+                      <div key={index} className="order-item-detail">
+                        {item.quantity}x {item.product}
+                      </div>
+                    ))}
+                  </div>
+                </td>
+                <td>{order.customization || 'Sin personalización'}</td>
+                <td>${order.total.toLocaleString('es-CL')}</td>
+                <td>
+                  <span className={`status-badge status-${order.status}`}>
                     {order.status}
                   </span>
                 </td>
@@ -342,12 +344,12 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
                     className="status-select"
                   >
                     <option value="pending">Pendiente</option>
-                    <option value="processing">En proceso</option>
+                    <option value="processing">En preparación</option>
+                    <option value="ready">Listo para entrega</option>
                     <option value="completed">Completado</option>
                     <option value="cancelled">Cancelado</option>
                   </select>
-                  <button className="btn-view">Detalles</button>
-                  <button className="btn-edit">Editar</button>
+                  <button className="btn-view">Ver Detalles</button>
                 </td>
               </tr>
             ))}
@@ -359,7 +361,7 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
 };
 
 // Componente Gestión de Productos
-const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
+const ProductsTab = ({ products, onUpdate, onAdd }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -368,11 +370,17 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
     stock: ''
   });
 
+  const categories = [
+    'Tortas Cuadradas', 'Tortas Circulares', 'Postres Individuales',
+    'Productos Sin Azúcar', 'Pastelería Tradicional', 'Productos Sin Gluten',
+    'Productos Vegana', 'Tortas Especiales'
+  ];
+
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd({
       ...newProduct,
-      price: parseFloat(newProduct.price),
+      price: parseInt(newProduct.price),
       stock: parseInt(newProduct.stock),
       status: 'active'
     });
@@ -383,11 +391,8 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
   return (
     <div className="tab-content">
       <div className="tab-header">
-        <h2>Gestión de Productos</h2>
-        <button 
-          className="btn-primary"
-          onClick={() => setShowAddForm(!showAddForm)}
-        >
+        <h2>🍰 Gestión de Productos</h2>
+        <button className="btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
           + Agregar Producto
         </button>
       </div>
@@ -404,33 +409,35 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
                 onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
                 required
               />
-              <input
-                type="text"
-                placeholder="Categoría"
+              <select
                 value={newProduct.category}
                 onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
                 required
-              />
+              >
+                <option value="">Seleccionar categoría</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
             </div>
             <div className="form-row">
               <input
                 type="number"
-                placeholder="Precio"
-                step="0.01"
+                placeholder="Precio (CLP)"
                 value={newProduct.price}
                 onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
                 required
               />
               <input
                 type="number"
-                placeholder="Stock"
+                placeholder="Stock disponible"
                 value={newProduct.stock}
                 onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
                 required
               />
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn-success">Guardar</button>
+              <button type="submit" className="btn-success">Guardar Producto</button>
               <button type="button" onClick={() => setShowAddForm(false)}>Cancelar</button>
             </div>
           </form>
@@ -441,7 +448,7 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
         <table className="admin-table">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>Código</th>
               <th>Nombre</th>
               <th>Categoría</th>
               <th>Precio</th>
@@ -456,22 +463,16 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
                 <td>{product.id}</td>
                 <td>{product.name}</td>
                 <td>{product.category}</td>
-                <td>${product.price}</td>
+                <td>${product.price.toLocaleString('es-CL')}</td>
                 <td>{product.stock}</td>
                 <td>
-                  <span className={`status-badge status-${product.stock > 0 ? 'active' : 'rejected'}`}>
+                  <span className={`status-badge status-${product.stock > 0 ? 'active' : 'inactive'}`}>
                     {product.stock > 0 ? 'En stock' : 'Agotado'}
                   </span>
                 </td>
                 <td className="actions">
                   <button className="btn-edit">Editar</button>
                   <button className="btn-view">Ver</button>
-                  <button 
-                    className="btn-delete"
-                    onClick={() => onDelete(product.id)}
-                  >
-                    Eliminar
-                  </button>
                 </td>
               </tr>
             ))}
@@ -482,10 +483,10 @@ const ProductsTab = ({ products, onAdd, onUpdate, onDelete }) => {
   );
 };
 
-// UsersTab actualizado
-const UsersTab = ({ users, onDelete, onUpdateRole }) => (
+// Componente Gestión de Usuarios
+const UsersTab = ({ users, onUpdateRole }) => (
   <div className="tab-content">
-    <h2>Gestión de Usuarios</h2>
+    <h2>👥 Gestión de Usuarios</h2>
     <div className="table-container">
       <table className="admin-table">
         <thead>
@@ -495,7 +496,7 @@ const UsersTab = ({ users, onDelete, onUpdateRole }) => (
             <th>Email</th>
             <th>Fecha Registro</th>
             <th>Rol</th>
-            <th>Recetas</th>
+            <th>Descuento Aplicado</th>
             <th>Estado</th>
             <th>Acciones</th>
           </tr>
@@ -513,26 +514,25 @@ const UsersTab = ({ users, onDelete, onUpdateRole }) => (
                   onChange={(e) => onUpdateRole(user.id, e.target.value)}
                   className="role-select"
                 >
-                  <option value="user">Usuario</option>
-                  <option value="chef">Chef</option>
-                  <option value="moderator">Moderador</option>
+                  <option value="customer">Cliente</option>
+                  <option value="student">Estudiante Duoc</option>
+                  <option value="senior">Adulto Mayor</option>
                   <option value="admin">Administrador</option>
                 </select>
               </td>
-              <td>{user.recipes}</td>
               <td>
-                <span className="status-badge status-active">
-                  {user.status}
-                </span>
+                {user.discount ? (
+                  <span className="discount-badge">{user.discount}</span>
+                ) : (
+                  'Sin descuento'
+                )}
+              </td>
+              <td>
+                <span className="status-badge status-active">{user.status}</span>
               </td>
               <td className="actions">
                 <button className="btn-edit">Editar</button>
-                <button 
-                  className="btn-delete"
-                  onClick={() => onDelete(user.id)}
-                >
-                  Eliminar
-                </button>
+                <button className="btn-view">Ver Pedidos</button>
               </td>
             </tr>
           ))}
@@ -541,81 +541,108 @@ const UsersTab = ({ users, onDelete, onUpdateRole }) => (
     </div>
   </div>
 );
-// Componente para Gestión de Recetas
-const RecipesTab = ({ recipes, onApprove, onReject }) => (
-  <div className="tab-content">
-    <h2>Gestión de Recetas</h2>
-    <div className="table-container">
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Autor</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {recipes.map(recipe => (
-            <tr key={recipe.id}>
-              <td>{recipe.id}</td>
-              <td>{recipe.name}</td>
-              <td>{recipe.author}</td>
-              <td>{recipe.date}</td>
-              <td>
-                <span className={`status-badge status-${recipe.status}`}>
-                  {recipe.status}
-                </span>
-              </td>
-              <td className="actions">
-                {recipe.status === 'pending' && (
-                  <>
-                    <button 
-                      className="btn-approve"
-                      onClick={() => onApprove(recipe.id)}
-                    >
-                      Aprobar
-                    </button>
-                    <button 
-                      className="btn-reject"
-                      onClick={() => onReject(recipe.id)}
-                    >
-                      Rechazar
-                    </button>
-                  </>
-                )}
-                <button className="btn-view">Ver</button>
-                <button className="btn-delete">Eliminar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+// Componente Sistema de Descuentos
+const DiscountsTab = ({ users }) => {
+  const seniorUsers = users.filter(user => user.age > 50);
+  const studentUsers = users.filter(user => user.email.includes('duocuc.cl'));
+  const codeUsers = users.filter(user => user.discount && user.discount.includes('10%'));
+
+  return (
+    <div className="tab-content">
+      <h2>🎫 Sistema de Descuentos</h2>
+      
+      <div className="discounts-grid">
+        <div className="discount-card">
+          <h3>👴 Descuento 50% Mayores de 50 años</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{seniorUsers.length}</span>
+            <span className="stat-label">Usuarios beneficiados</span>
+          </div>
+          <div className="discount-actions">
+            <button className="btn-primary">Gestionar Descuento</button>
+          </div>
+        </div>
+
+        <div className="discount-card">
+          <h3>🎓 Torta Gratis Estudiantes Duoc</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{studentUsers.length}</span>
+            <span className="stat-label">Estudiantes registrados</span>
+          </div>
+          <div className="discount-info">
+            <p>Correos institucionales: @duocuc.cl</p>
+            <p>Torta gratis en su cumpleaños</p>
+          </div>
+        </div>
+
+        <div className="discount-card">
+          <h3>🎂 10% Descuento Código FELICES50</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{codeUsers.length}</span>
+            <span className="stat-label">Usuarios registrados</span>
+          </div>
+          <div className="discount-info">
+            <p>Descuento de por vida</p>
+            <p>Código promocional activo</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="discounts-management">
+        <h3>Configuración de Descuentos</h3>
+        <div className="config-form">
+          <div className="config-item">
+            <label>Edad mínima descuento adulto mayor:</label>
+            <input type="number" defaultValue="50" />
+          </div>
+          <div className="config-item">
+            <label>Porcentaje descuento adultos mayores:</label>
+            <input type="number" defaultValue="50" />%
+          </div>
+          <div className="config-item">
+            <label>Dominios de correo estudiantil:</label>
+            <input type="text" defaultValue="duocuc.cl" />
+          </div>
+          <button className="btn-success">Guardar Configuración</button>
+        </div>
+      </div>
     </div>
-  </div>
-);
-// Componente para Gestión de Categorías
-const CategoriesTab = () => (
+  );
+};
+
+// Componente Categorías
+const CategoriesTab = ({ categories, products }) => (
   <div className="tab-content">
-    <h2>Gestión de Categorías</h2>
-    <div className="categories-management">
+    <h2>🏷️ Gestión de Categorías</h2>
+    
+    <div className="categories-grid">
+      {categories.map(category => {
+        const categoryProducts = products.filter(p => p.category === category);
+        return (
+          <div key={category} className="category-card">
+            <h3>{category}</h3>
+            <div className="category-stats">
+              <span>{categoryProducts.length} productos</span>
+              <span>Stock total: {categoryProducts.reduce((sum, p) => sum + p.stock, 0)}</span>
+            </div>
+            <div className="category-actions">
+              <button className="btn-edit">Editar</button>
+              <button className="btn-view">Ver Productos</button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <div className="add-category-section">
+      <h3>Agregar Nueva Categoría</h3>
       <div className="add-category-form">
-        <h3>Agregar Nueva Categoría</h3>
-        <input type="text" placeholder="Nombre de categoría" />
-        <button className="btn-primary">Agregar</button>
-      </div>
-      <div className="categories-list">
-        <h3>Categorías Existentes</h3>
-        <ul>
-          <li>Postres <button className="btn-edit">Editar</button></li>
-          <li>Platos Principales <button className="btn-edit">Editar</button></li>
-          <li>Ensaladas <button className="btn-edit">Editar</button></li>
-          <li>Bebidas <button className="btn-edit">Editar</button></li>
-        </ul>
+        <input type="text" placeholder="Nombre de la categoría" />
+        <button className="btn-primary">Agregar Categoría</button>
       </div>
     </div>
   </div>
 );
+
 export default AdminProfile;
