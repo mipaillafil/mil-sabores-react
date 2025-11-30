@@ -9,6 +9,7 @@ import Promotions from './components/pages/Promotions';
 import LogIn from './components/pages/LogIn';
 import SignUp from './components/pages/SignUp';
 import PaymentProcess from './components/pages/PaymentProcess';
+import AdminProfile from './components/pages/AdminProfile';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path='/Inicio-Sesion' element={<LogIn/>} />
         <Route path='/Registrarse' element={<SignUp/>} />
         <Route path='/Procesar-Compra' element={<PaymentProcess/>} />
+        <Route path='/Perfil-Admin' element={<AdminProfile/>} />
       </Routes>
     </BrowserRouter>
   );
