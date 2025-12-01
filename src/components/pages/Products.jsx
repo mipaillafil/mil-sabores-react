@@ -4,7 +4,7 @@ import Footer from "../organisms/Footer";
 import Banner from "../organisms/Banner";
 import NavCategorias from "../organisms/NavCategories";
 import ProductCard from "../molecules/ProductCard";
-import { apiGetPublicProducts } from "../../api";
+import { getProducts } from "../../services/api";
 
 const imgClassByNombre = {
   "Torta cuadrada de chocolate": "torta-cuadrada-chocolate",
@@ -30,7 +30,7 @@ export default function Products() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    apiGetPublicProducts()
+    getProducts()
       .then(setProducts)
       .catch(() =>
         setError("No se pudieron cargar los productos. Intenta más tarde.")
