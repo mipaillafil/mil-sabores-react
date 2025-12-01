@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Header from "./organisms/Header";
-import Footer from "./organisms/Footer";
-import Banner from "./organisms/Banner";
-import NavCategorias from "./organisms/NavCategories";
+import Header from "../organisms/Header";
+import Footer from "../organisms/Footer";
+import Banner from "../organisms/Banner";
+import NavCategorias from "../organisms/NavCategories";
 import ProductCard from "./molecules/ProductCard";
 import { apiGetPublicProducts } from "../../api";
 
