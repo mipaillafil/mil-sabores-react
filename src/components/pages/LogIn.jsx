@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { apiLogin } from "../../api";
+import { login as apiLogin } from "../../api";
 import { useAuth } from "../../AuthContext";
 
 export default function LogIn() {
@@ -8,16 +8,17 @@ export default function LogIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: authLogin } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
+      // Llamamos a la API
       const data = await apiLogin(email, password);
       // data = { token, user }
-      login(data);
+      authLogin(data);
 
       if (data.user.rol === "ADMIN") {
         navigate("/Perfil-Admin");
