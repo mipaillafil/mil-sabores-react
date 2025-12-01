@@ -10,7 +10,16 @@ import LogIn from './components/pages/LogIn';
 import SignUp from './components/pages/SignUp';
 import PaymentProcess from './components/pages/PaymentProcess';
 import AdminProfile from './components/pages/AdminProfile';
+import { useAuth } from './services/AuthContext';
 
+function AdminRoute({ children }) {
+  const { auth } = useAuth();
+
+  if (!auth) return <Navigate to="/Inicio-Sesion" replace />;
+  if (auth.user.rol !== "ADMIN") return <Navigate to="/" replace />;
+
+  return children;
+}
 
 function App() {
   return (
@@ -25,7 +34,14 @@ function App() {
         <Route path='/Inicio-Sesion' element={<LogIn/>} />
         <Route path='/Registrarse' element={<SignUp/>} />
         <Route path='/Procesar-Compra' element={<PaymentProcess/>} />
-        <Route path='/Perfil-Admin' element={<AdminProfile/>} />
+        <Route
+          path="/Perfil-Admin"
+          element={
+            <AdminRoute>
+              <AdminProfile />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
