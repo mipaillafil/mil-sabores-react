@@ -8,7 +8,7 @@ import {
   getAdminUsers,
   createProduct,
   updateProduct
-} from "../../api";
+} from "../../services/api";
 
 const AdminProfile = () => {
   const navigate = useNavigate();
