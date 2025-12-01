@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login as apiLogin } from "../../services/api";
-import { useAuth } from "../../AuthContext";
+import { useAuth } from "../../services/AuthContext";
+
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
