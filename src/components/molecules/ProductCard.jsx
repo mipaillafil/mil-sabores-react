@@ -27,22 +27,38 @@ export default function ProductCard(props) {
 
 
   const productWithImg = {
-    ...props,
+    codigo,
+    titulo,
+    precio,
+    descripcion,
+    imgClass,
     img: imgMap[imgClass] || "",
+    quantity: 1,
+  };
+    const notifyCartChange = (products) => {
+    const count = products.reduce(
+      (acc, p) => acc + (p.quantity || 1),
+      0
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("cart-updated", {
+        detail: { count },
+      })
+    );
   };
 
   function addToCart() {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     products.push(productWithImg);
     localStorage.setItem("products", JSON.stringify(products));
-    console.log(products);
+
+    notifyCartChange(products);
   }
 
   return (
     <div className="producto-card">
-      {/* AQUÍ NO PONEMOS <img>, sólo un DIV con background */}
       <div className={`producto-img ${imgClass}`}></div>
-
       <div className="info">
         <p className="codigo-producto">Código: {codigo}</p>
         <h3 className="titulo-producto">{titulo}</h3>

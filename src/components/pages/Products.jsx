@@ -7,6 +7,7 @@ import ProductCard from "../molecules/ProductCard";
 import { getProducts } from "../../services/api";
 import "./Products.css";
 
+
 const imgClassByNombre = {
   "torta cuadrada de chocolate": "torta-cuadrada-chocolate",
   "torta cuadrada de frutas": "torta-cuadrada-frutas",
@@ -30,16 +31,16 @@ const imgClassByNombre = {
   "torta especial de boda": "torta-boda",
 };
 
-// 🔧 helper: normaliza el nombre que viene de la API
-const getImgClassForName = (nombre) => {
-  if (!nombre) return "producto-generico";
-
-  const key = nombre
-    .normalize("NFD")// separa tildes
-    .replace(/[\u0300-\u036f]/g, "") // quita tildes
+// helper: normaliza texto (minúsculas, sin tildes)
+const normalize = (str = "") =>
+  str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .trim();
 
+const getImgClassForName = (nombre) => {
+  const key = normalize(nombre);
   return imgClassByNombre[key] || "producto-generico";
 };
 
@@ -50,7 +51,7 @@ const CATEGORIAS = [
   { id: "productos-sin-azucar", titulo: "Productos Sin Azúcar", apiValue: "Productos Sin Azúcar" },
   { id: "pasteleria-tradicional", titulo: "Pastelería Tradicional", apiValue: "Pastelería Tradicional" },
   { id: "productos-sin-gluten", titulo: "Productos Sin Gluten", apiValue: "Productos Sin Gluten" },
-  { id: "productos-veganos", titulo: "Productos Veganos", apiValue: "Productos Vegana" },
+  { id: "productos-veganos", titulo: "Productos Veganos", apiValue: "Productos Veganos" },
   { id: "tortas-especiales", titulo: "Tortas Especiales", apiValue: "Tortas Especiales" },
 ];
 
@@ -62,7 +63,7 @@ export default function Products() {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getProducts();
+        const data = await getProducts(); // GET /products
         const activos = (data || []).filter(
           (p) => p.activo === undefined || p.activo
         );
@@ -81,7 +82,10 @@ export default function Products() {
     if (loading) return <p>Cargando productos...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
-    const filtered = products.filter((p) => p.categoria === categoriaApi);
+    // 👇 comparamos categorías normalizadas (sin tildes, minúsculas)
+    const filtered = products.filter(
+      (p) => normalize(p.categoria) === normalize(categoriaApi)
+    );
 
     if (!filtered.length) {
       return <p>No hay productos disponibles en esta categoría.</p>;

@@ -24,14 +24,17 @@ export default function Cart() {
   // dentro de Cart.jsx
 const saveProducts = (updatedProducts) => {
   setProducts(updatedProducts);
-  localStorage.setItem("products", JSON.stringify(updatedProducts));
+  localStorage.setItem('products', JSON.stringify(updatedProducts));
 
   const count = updatedProducts.reduce(
     (acc, p) => acc + (p.quantity || 1),
     0
   );
+
   window.dispatchEvent(
-    new CustomEvent("cart-updated", { detail: { count } })
+    new CustomEvent('cart-updated', {
+      detail: { count },
+    })
   );
 };
 
