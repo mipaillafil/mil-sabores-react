@@ -91,6 +91,7 @@ const AdminProfile = () => {
         id: u.id,
         name: u.nombre,
         email: u.email,
+        username: u.username,
         joinDate: u.fechaNacimiento,
         role: u.rol,
         status: "activo",
