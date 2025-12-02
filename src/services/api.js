@@ -1,6 +1,6 @@
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://18.207.129.61:9090";
+  import.meta.env.VITE_API_BASE_URL || "http://98.92.75.156:9090";
 
 async function apiFetch(path, options = {}) {
   const { token, ...restOptions } = options;

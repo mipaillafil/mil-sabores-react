@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { login as apiLogin } from "../../services/api";
 import { useAuth } from "../../services/AuthContext";
 
-
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login: authLogin } = useAuth();
@@ -17,14 +17,13 @@ export default function LogIn() {
 
     try {
       // Llamamos a la API
-      const data = await apiLogin(email, password);
-      // data = { token, user }
+      const data = await apiLogin(email, password); // { token, user }
       authLogin(data);
 
       if (data.user.rol === "ADMIN") {
         navigate("/Perfil-Admin");
       } else {
-        navigate("/");
+        navigate("/Perfil-Usuario");
       }
     } catch (err) {
       setError("Correo o contraseña incorrectos");
@@ -65,14 +64,23 @@ export default function LogIn() {
             <label htmlFor="password" className="form-label">
               Contraseña
             </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Ingresa tu contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-input-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Ingresa tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowPassword((v) => !v)}
+              >
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
           </div>
 
           {error && <p className="error-message">{error}</p>}

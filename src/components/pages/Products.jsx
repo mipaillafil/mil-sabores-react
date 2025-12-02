@@ -7,59 +7,87 @@ import ProductCard from "../molecules/ProductCard";
 import { getProducts } from "../../services/api";
 
 const imgClassByNombre = {
-  "Torta cuadrada de chocolate": "torta-cuadrada-chocolate",
-  "Torta cuadrada de frutas": "torta-cuadrada-frutas",
-  "Torta circular de manjar": "torta-circular-manjar",
-  "Torta circular de vainilla": "torta-circular-vainilla",
-  "Mousse de chocolate": "mousse-chocolate",
-  "Tiramisú": "tiramisu",
-  "Torta de naranja sin azúcar": "torta-naranja-sin-azucar",
-  "Cheesecake de frutilla sin azúcar": "cheesecake-sin-azucar",
-  "Empanada de manzana": "empanada-manzana",
+  "Torta Cuadrada de Chocolate": "torta-cuadrada-chocolate",
+  "Torta Cuadrada de Frutas": "torta-cuadrada-frutas",
+  "Torta Circular de Manjar": "torta-circular-manjar",
+  "Torta Circular de Vainilla": "torta-circular-vainilla",
+  "Mousse de Chocolate": "mousse-chocolate",
+  "Tiramisú Clásico": "tiramisu",
+  "Torta sin Azúcar de Naranja": "torta-naranja-sin-azucar",
+  "Cheesecake Sin Azúcar": "cheesecake-sin-azucar",
+  "Empanada de Manzana": "empanada-manzana",
   "Tarta de Santiago": "tarta-santiago",
-  "Brownie sin gluten": "brownie-sin-gluten",
-  "Pan sin gluten": "pan-sin-gluten",
-  "Torta vegana de chocolate": "torta-vegana-chocolate",
-  "Galletas veganas de avena": "galletas-avena-veganas",
-  "Torta especial de cumpleaños": "torta-cumpleanos",
-  "Torta especial de boda": "torta-boda",
+  "Brownie Sin Gluten": "brownie-sin-gluten",
+  "Pan Sin Gluten": "pan-sin-gluten",
+  "Torta Vegana de Chocolate": "torta-vegana-chocolate",
+  "Galletas Veganas de Avena": "galletas-avena-veganas",
+  "Torta Especial de Cumpleaños": "torta-cumpleanos",
+  "Torta Especial de Boda": "torta-boda",
 };
+
+const CATEGORIAS = [
+  { id: "tortas-cuadradas", titulo: "Tortas Cuadradas", apiValue: "Tortas Cuadradas" },
+  { id: "tortas-circulares", titulo: "Tortas Circulares", apiValue: "Tortas Circulares" },
+  { id: "postres-individuales", titulo: "Postres Individuales", apiValue: "Postres Individuales" },
+  { id: "productos-sin-azucar", titulo: "Productos Sin Azúcar", apiValue: "Productos Sin Azúcar" },
+  { id: "pasteleria-tradicional", titulo: "Pastelería Tradicional", apiValue: "Pastelería Tradicional" },
+  { id: "productos-sin-gluten", titulo: "Productos Sin Gluten", apiValue: "Productos Sin Gluten" },
+  { id: "productos-veganos", titulo: "Productos Veganos", apiValue: "Productos Vegana" },
+  { id: "tortas-especiales", titulo: "Tortas Especiales", apiValue: "Tortas Especiales" },
+];
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getProducts()
-      .then(setProducts)
-      .catch(() =>
-        setError("No se pudieron cargar los productos. Intenta más tarde.")
-      );
+    const load = async () => {
+      try {
+        const data = await getProducts(); // GET /products
+        const activos = (data || []).filter(
+          (p) => p.activo === undefined || p.activo
+        );
+        setProducts(activos);
+      } catch (err) {
+        console.error(err);
+        setError("No se pudieron cargar los productos.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, []);
 
-  const byCategory = (cat) =>
-    products.filter((p) => p.categoria === cat && p.activo);
+  const renderCategory = (categoriaApi) => {
+    if (loading) return <p>Cargando productos...</p>;
+    if (error) return <p className="error-message">{error}</p>;
 
-  const formatCLP = (n) =>
-    n.toLocaleString("es-CL", { style: "currency", currency: "CLP" });
+    const filtered = products.filter((p) => p.categoria === categoriaApi);
 
-  const renderCategory = (id, title, catName) => (
-    <section className="container categoria-productos" id={id}>
-      <h2 className="titulo-seccion">{title}</h2>
+    if (!filtered.length) {
+      return <p>No hay productos disponibles en esta categoría.</p>;
+    }
+
+    return (
       <div className="productos-grid">
-        {byCategory(catName).map((p) => (
-          <ProductCard
-            key={p.id}
-            codigo={`P${p.id}`}
-            titulo={p.nombre}
-            precio={formatCLP(p.precio)}
-            descripcion={p.descripcion}
-            imgClass={imgClassByNombre[p.nombre] || "torta-cuadrada-chocolate"}
-          />
-        ))}
+        {filtered.map((p) => {
+          const imgClass = imgClassByNombre[p.nombre] || "producto-generico";
+
+          return (
+            <ProductCard
+              key={p.id}
+              codigo={p.id}
+              titulo={p.nombre}
+              precio={`$${Number(p.precio).toLocaleString("es-CL")}`}
+              descripcion={p.descripcion || "Delicioso producto de nuestra pastelería."}
+              imgClass={imgClass}
+            />
+          );
+        })}
       </div>
-    </section>
-  );
+    );
+  };
 
   return (
     <>
@@ -74,15 +102,16 @@ export default function Products() {
 
       <NavCategorias />
 
-      {error && <p className="error-message">{error}</p>}
-
-      {renderCategory("tortas-cuadradas", "Tortas Cuadradas", "Tortas Cuadradas")}
-      {renderCategory("tortas-circulares", "Tortas Circulares", "Tortas Circulares")}
-      {renderCategory("postres-individuales", "Postres Individuales", "Postres individuales")}
-      {renderCategory("sin-azucar", "Productos sin azúcar", "Sin azúcar")}
-      {renderCategory("sin-gluten", "Productos Sin Gluten", "Productos sin gluten")}
-      {renderCategory("veganos", "Productos Veganos", "Productos veganos")}
-      {renderCategory("tortas-especiales", "Tortas Especiales", "Tortas especiales")}
+      {CATEGORIAS.map((cat) => (
+        <section
+          key={cat.id}
+          className="container categoria-productos"
+          id={cat.id}
+        >
+          <h2 className="titulo-seccion">{cat.titulo}</h2>
+          {renderCategory(cat.apiValue)}
+        </section>
+      ))}
 
       <Footer />
     </>
