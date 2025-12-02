@@ -1,0 +1,92 @@
+.producto-card {
+  background-color: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-img {
+  width: 100%;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.producto-card .info {
+  padding: 20px;
+  text-align: center;
+}
+
+/* ==== IMÁGENES POR PRODUCTO ==== */
+
+.producto-img.torta-cuadrada-chocolate {
+  background-image: url("/img/torta_chocolate.jpg");
+}
+
+.producto-img.torta-cuadrada-frutas {
+  background-image: url("/img/torta_cuadrada.jpg");
+}
+
+.producto-img.torta-circular-manjar {
+  background-image: url("/img/torta_manjar_v2.jpg");
+}
+
+.producto-img.torta-circular-vainilla {
+  background-image: url("/img/torta_vainilla.jpg");
+}
+
+.producto-img.mousse-chocolate {
+  background-image: url("/img/mousse.jpg");
+}
+
+.producto-img.tiramisu {
+  background-image: url("/img/tiramisu.jpg");
+}
+
+.producto-img.torta-naranja-sin-azucar {
+  background-image: url("/img/torta_naranja.jpg");
+}
+
+.producto-img.cheesecake-sin-azucar {
+  background-image: url("/img/cheesecake_frutilla.webp");
+}
+
+.producto-img.empanada-manzana {
+  background-image: url("/img/empanada_manzana.jpg");
+}
+
+.producto-img.tarta-santiago {
+  background-image: url("/img/tarta_santiago.jpg");
+}
+
+.producto-img.brownie-sin-gluten {
+  background-image: url("/img/brownie.jpg");
+}
+
+.producto-img.pan-sin-gluten {
+  background-image: url("/img/pan_sin_gluten.jpg");
+}
+
+.producto-img.torta-vegana-chocolate {
+  background-image: url("/img/chocolate_vegano.jpg");
+}
+
+.producto-img.galletas-avena-veganas {
+  background-image: url("/img/galleta_vegana.jpg");
+}
+
+.producto-img.torta-cumpleanos {
+  background-image: url("/img/torta_hbd.jpg");
+}
+
+.producto-img.torta-boda {
+  background-image: url("/img/torta_boda.jpg");
+}
+
+/* Opcional: fallback genérico si algún nombre no hace match
+.producto-img.producto-generico {
+  background-image: url("/img/postres.jpg");
+}*/

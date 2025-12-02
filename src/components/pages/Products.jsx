@@ -5,29 +5,44 @@ import Banner from "../organisms/Banner";
 import NavCategorias from "../organisms/NavCategories";
 import ProductCard from "../molecules/ProductCard";
 import { getProducts } from "../../services/api";
+import "./Products.css";
 
-// Mapa nombre → imgClass (para ProductCard)
 const imgClassByNombre = {
-  "Torta Cuadrada de Chocolate": "torta-cuadrada-chocolate",
-  "Torta Cuadrada de Frutas": "torta-cuadrada-frutas",
-  "Torta Circular de Manjar": "torta-circular-manjar",
-  "Torta Circular de Vainilla": "torta-circular-vainilla",
-  "Mousse de Chocolate": "mousse-chocolate",
-  "Tiramisú Clásico": "tiramisu",
-  "Torta Sin Azúcar de Naranja": "torta-naranja-sin-azucar",
-  "Torta sin Azúcar de Naranja": "torta-naranja-sin-azucar",
-  "Cheesecake Sin Azúcar": "cheesecake-sin-azucar",
-  "Empanada de Manzana": "empanada-manzana",
-  "Tarta de Santiago": "tarta-santiago",
-  "Brownie Sin Gluten": "brownie-sin-gluten",
-  "Pan Sin Gluten": "pan-sin-gluten",
-  "Torta Vegana de Chocolate": "torta-vegana-chocolate",
-  "Galletas Veganas de Avena": "galletas-avena-veganas",
-  "Torta Especial de Cumpleaños": "torta-cumpleanos",
-  "Torta Especial de Boda": "torta-boda",
+  "torta cuadrada de chocolate": "torta-cuadrada-chocolate",
+  "torta cuadrada de frutas": "torta-cuadrada-frutas",
+  "torta circular de manjar": "torta-circular-manjar",
+  "torta circular de vainilla": "torta-circular-vainilla",
+  "mousse de chocolate": "mousse-chocolate",
+  "tiramisú clasico": "tiramisu",
+  "tiramisu clasico": "tiramisu",
+  "torta sin azúcar de naranja": "torta-naranja-sin-azucar",
+  "torta sin azucar de naranja": "torta-naranja-sin-azucar",
+  "cheesecake sin azúcar": "cheesecake-sin-azucar",
+  "cheesecake sin azucar": "cheesecake-sin-azucar",
+  "empanada de manzana": "empanada-manzana",
+  "tarta de santiago": "tarta-santiago",
+  "brownie sin gluten": "brownie-sin-gluten",
+  "pan sin gluten": "pan-sin-gluten",
+  "torta vegana de chocolate": "torta-vegana-chocolate",
+  "galletas veganas de avena": "galletas-avena-veganas",
+  "torta especial de cumpleaños": "torta-cumpleanos",
+  "torta especial de cumpleanos": "torta-cumpleanos",
+  "torta especial de boda": "torta-boda",
 };
 
-// categorías que mostramos en la página
+// 🔧 helper: normaliza el nombre que viene de la API
+const getImgClassForName = (nombre) => {
+  if (!nombre) return "producto-generico";
+
+  const key = nombre
+    .normalize("NFD")// separa tildes
+    .replace(/[\u0300-\u036f]/g, "") // quita tildes
+    .toLowerCase()
+    .trim();
+
+  return imgClassByNombre[key] || "producto-generico";
+};
+
 const CATEGORIAS = [
   { id: "tortas-cuadradas", titulo: "Tortas Cuadradas", apiValue: "Tortas Cuadradas" },
   { id: "tortas-circulares", titulo: "Tortas Circulares", apiValue: "Tortas Circulares" },
@@ -39,14 +54,6 @@ const CATEGORIAS = [
   { id: "tortas-especiales", titulo: "Tortas Especiales", apiValue: "Tortas Especiales" },
 ];
 
-// helper para comparar strings de categoría de forma robusta
-const normalize = (str) =>
-  (str || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // quita tildes
-    .toLowerCase()
-    .trim();
-
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,7 +62,7 @@ export default function Products() {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getProducts(); // GET /products
+        const data = await getProducts();
         const activos = (data || []).filter(
           (p) => p.activo === undefined || p.activo
         );
@@ -74,11 +81,7 @@ export default function Products() {
     if (loading) return <p>Cargando productos...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
-    const catNorm = normalize(categoriaApi);
-
-    const filtered = products.filter(
-      (p) => normalize(p.categoria) === catNorm
-    );
+    const filtered = products.filter((p) => p.categoria === categoriaApi);
 
     if (!filtered.length) {
       return <p>No hay productos disponibles en esta categoría.</p>;
@@ -87,7 +90,7 @@ export default function Products() {
     return (
       <div className="productos-grid">
         {filtered.map((p) => {
-          const imgClass = imgClassByNombre[p.nombre] || "producto-generico";
+          const imgClass = getImgClassForName(p.nombre);
 
           return (
             <ProductCard
@@ -95,9 +98,7 @@ export default function Products() {
               codigo={p.id}
               titulo={p.nombre}
               precio={`$${Number(p.precio).toLocaleString("es-CL")}`}
-              descripcion={
-                p.descripcion || "Delicioso producto de nuestra pastelería."
-              }
+              descripcion={p.descripcion || "Delicioso producto de nuestra pastelería."}
               imgClass={imgClass}
             />
           );

@@ -1,8 +1,11 @@
 import React from "react";
+import "../pages/Products.css";
 
 export default function ProductCard(props) {
   const { codigo, titulo, precio, descripcion, imgClass } = props;
 
+  // Mapa para guardar la ruta real de la imagen
+  // (se usa para el carrito)
   const imgMap = {
     "torta-cuadrada-chocolate": "/img/torta_chocolate.jpg",
     "torta-cuadrada-frutas": "/img/torta_cuadrada.jpg",
@@ -20,31 +23,25 @@ export default function ProductCard(props) {
     "galletas-avena-veganas": "/img/galleta_vegana.jpg",
     "torta-cumpleanos": "/img/torta_hbd.jpg",
     "torta-boda": "/img/torta_boda.jpg",
-    "producto-generico": "/img/postres.jpg"
   };
 
-  const imageSrc = imgMap[imgClass] || imgMap["producto-generico"];
+
+  const productWithImg = {
+    ...props,
+    img: imgMap[imgClass] || "",
+  };
 
   function addToCart() {
     const products = JSON.parse(localStorage.getItem("products")) || [];
-    products.push({
-      codigo,
-      titulo,
-      precio,
-      descripcion,
-      img: imageSrc,
-    });
-
+    products.push(productWithImg);
     localStorage.setItem("products", JSON.stringify(products));
-    window.dispatchEvent(new Event("storage"));
+    console.log(products);
   }
 
   return (
     <div className="producto-card">
-      {/* Imagen que respeta el cuadro */}
-      <div className="producto-img-wrapper">
-        <img src={imageSrc} alt={titulo} className="producto-img-real" />
-      </div>
+      {/* AQUÍ NO PONEMOS <img>, sólo un DIV con background */}
+      <div className={`producto-img ${imgClass}`}></div>
 
       <div className="info">
         <p className="codigo-producto">Código: {codigo}</p>
