@@ -533,3 +533,35 @@
     font-size: 1.6em;
   }
 }
+
+.btn-warning {
+  background: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-right: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-warning:hover {
+  background: #ec971f;
+}
+
+.btn-danger {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: #c9302c;
+}
+
+.row-inactive {
+  opacity: 0.4;
+  background-color: #f2dede;
+}

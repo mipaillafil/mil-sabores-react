@@ -16,12 +16,12 @@ const AdminProfile = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 
   const [stats, setStats] = useState({
-    totalOrders: 0,
+    totalOrders: 5,
     totalUsers: 0,
     totalProducts: 0,
     pendingOrders: 0,
     todayRevenue: 0,
-    monthlyRevenue: 0,
+    monthlyRevenue: 2500000,
     birthdayStudents: 0
   });
 
@@ -75,7 +75,7 @@ const AdminProfile = () => {
         category: p.categoria,
         price: p.precio,
         stock: 10, // sin stock en API → valor temporal
-        status: p.activo ? "active" : "inactive"
+        status: p.activo ? "activo" : "inactivo"
       }));
 
       setProducts(mappedProducts);
@@ -149,12 +149,12 @@ const AdminProfile = () => {
         prev.map((p) =>
           p.id === productId
             ? {
-                id: updated.id,
-                name: updated.nombre,
-                category: updated.categoria,
-                price: updated.precio,
-                stock: p.stock
-              }
+              id: updated.id,
+              name: updated.nombre,
+              category: updated.categoria,
+              price: updated.precio,
+              stock: p.stock
+            }
             : p
         )
       );
@@ -352,6 +352,7 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
               <th>Categoría</th>
               <th>Precio</th>
               <th>Estado</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -362,6 +363,20 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
                 <td>{p.category}</td>
                 <td>${p.price.toLocaleString("es-CL")}</td>
                 <td>{p.status}</td>
+                <td>
+                  <button
+                    className="btn-warning"
+                    onClick={() => onHide(p.id)}
+                  >
+                    Ocultar
+                  </button>
+                  <button
+                    className="btn-danger"
+                    onClick={() => onDelete(p.id)}
+                  >
+                    Eliminar
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -415,12 +430,114 @@ const UsersTab = ({ users, onUpdateRole }) => (
 
 // ================================================================================
 
-const OrdersTab = ({ orders }) => (
-  <div className="tab-content">
-    <h2>🛒 Órdenes</h2>
-    <p>No hay endpoint aún — podemos conectarlo después.</p>
-  </div>
-);
+const OrdersTab = ({ orders, onUpdateStatus }) => {
+  const [filterStatus, setFilterStatus] = useState("all");
+
+  const filteredOrders =
+    filterStatus === "all"
+      ? orders
+      : orders.filter((order) => order.status === filterStatus);
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "pending": return "warning";
+      case "processing": return "info";
+      case "ready": return "primary";
+      case "completed": return "success";
+      case "cancelled": return "error";
+      default: return "default";
+    }
+  };
+
+  return (
+    <div className="tab-content">
+      <div className="tab-header">
+        <h2>🛒 Gestión de Pedidos</h2>
+
+        <div className="filter-controls">
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">Todos los estados</option>
+            <option value="pending">Pendientes</option>
+            <option value="processing">En preparación</option>
+            <option value="ready">Listo para entrega</option>
+            <option value="completed">Completados</option>
+            <option value="cancelled">Cancelados</option>
+          </select>
+        </div>
+      </div>
+
+      {/* MISMO ESTILO DE TABLAS QUE PRODUCTOS Y USUARIOS */}
+      <div className="table-container">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>ID Pedido</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Productos</th>
+              <th>Personalización</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredOrders.map((order) => (
+              <tr key={order.id}>
+                <td>#{order.id}</td>
+                <td>{order.customer}</td>
+                <td>{order.date}</td>
+
+                <td>
+                  <div className="order-items">
+                    {order.items.map((item, index) => (
+                      <div key={index} className="order-item-detail">
+                        {item.quantity}x {item.product}
+                      </div>
+                    ))}
+                  </div>
+                </td>
+
+                <td>{order.customization || "Sin personalización"}</td>
+
+                <td>${order.total.toLocaleString("es-CL")}</td>
+
+                <td>
+                  <span className={`status-badge status-${getStatusColor(order.status)}`}>
+                    {order.status}
+                  </span>
+                </td>
+
+                <td>
+                  <select
+                    value={order.status}
+                    onChange={(e) => onUpdateStatus(order.id, e.target.value)}
+                    className="status-select"
+                  >
+                    <option value="pending">Pendiente</option>
+                    <option value="processing">En preparación</option>
+                    <option value="ready">Listo para entrega</option>
+                    <option value="completed">Completado</option>
+                    <option value="cancelled">Cancelado</option>
+                  </select>
+
+                  <button className="btn-view">Ver Detalles</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+
 
 // ================================================================================
 
@@ -435,11 +552,73 @@ const CategoriesTab = ({ categories }) => (
   </div>
 );
 
-const DiscountsTab = () => (
-  <div className="tab-content">
-    <h2>🎫 Descuentos</h2>
-    <p>Próximamente conectaremos descuentos reales.</p>
-  </div>
-);
+// Componente Sistema de Descuentos
+const DiscountsTab = ({ users }) => {
+  const seniorUsers = users.filter(user => user.age > 50);
+  const studentUsers = users.filter(user => user.email.includes('duocuc.cl'));
+  const codeUsers = users.filter(user => user.discount && user.discount.includes('10%'));
+
+  return (
+    <div className="tab-content">
+      <h2>🎫 Sistema de Descuentos</h2>
+      
+      <div className="discounts-grid">
+        <div className="discount-card">
+          <h3>👴 Descuento 50% Mayores de 50 años</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{seniorUsers.length}</span>
+            <span className="stat-label">Usuarios beneficiados</span>
+          </div>
+          <div className="discount-actions">
+            <button className="btn-primary">Gestionar Descuento</button>
+          </div>
+        </div>
+
+        <div className="discount-card">
+          <h3>🎓 Torta Gratis Estudiantes Duoc</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{studentUsers.length}</span>
+            <span className="stat-label">Estudiantes registrados</span>
+          </div>
+          <div className="discount-info">
+            <p>Correos institucionales: @duocuc.cl</p>
+            <p>Torta gratis en su cumpleaños</p>
+          </div>
+        </div>
+
+        <div className="discount-card">
+          <h3>🎂 10% Descuento Código FELICES50</h3>
+          <div className="discount-stats">
+            <span className="stat-number">{codeUsers.length}</span>
+            <span className="stat-label">Usuarios registrados</span>
+          </div>
+          <div className="discount-info">
+            <p>Descuento de por vida</p>
+            <p>Código promocional activo</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="discounts-management">
+        <h3>Configuración de Descuentos</h3>
+        <div className="config-form">
+          <div className="config-item">
+            <label>Edad mínima descuento adulto mayor:</label>
+            <input type="number" defaultValue="50" />
+          </div>
+          <div className="config-item">
+            <label>Porcentaje descuento adultos mayores:</label>
+            <input type="number" defaultValue="50" />%
+          </div>
+          <div className="config-item">
+            <label>Dominios de correo estudiantil:</label>
+            <input type="text" defaultValue="duocuc.cl" />
+          </div>
+          <button className="btn-success">Guardar Configuración</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default AdminProfile;
