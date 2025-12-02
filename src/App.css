@@ -3247,27 +3247,27 @@ footer {
 }
 
 .descuento-mayores {
-    background-image: url('img/persona\ mayor.jpg');
+    background-image: url('/img/persona_mayor.jpg');
 }
 
 .descuento-registro {
-    background-image: url('img/10porcierto.jpg');
+    background-image: url('/img/descuento_10_porcierto.jpg');
 }
 
 .torta-cumpleanos {
-    background-image: url('img/chef\ torta\ mano.webp');
+    background-image: url('/img/chef_torta_mano.webp');
 }
 
 .oferta-2x1 {
-    background-image: url('img/2x1cupcakesV2.jpg');
+    background-image: url('/img/promo_cupcakesv2.jpg');
 }
 
 .descuento-vegano {
-    background-image: url('img/reposteria\ vegana.jpg');
+    background-image: url('/img/reposteria_vegana.jpg');
 }
 
 .envio-gratis {
-    background-image: url('img/delivery.png');
+    background-image: url('/img/delivery.png');
 }
 
 .promocion-content {
