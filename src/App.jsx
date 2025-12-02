@@ -11,7 +11,7 @@ import SignUp from "./components/pages/SignUp";
 import PaymentProcess from "./components/pages/PaymentProcess";
 import AdminProfile from "./components/pages/AdminProfile";
 import { useAuth } from "./services/AuthContext";
-
+import UserProfile from "./components/pages/UserProfile";
 
 function AdminRoute({ children }) {
   const { auth } = useAuth();
@@ -43,6 +43,7 @@ function App() {
             </AdminRoute>
           }
         />
+        <Route path="/Perfil-Usuario" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );

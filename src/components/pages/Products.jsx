@@ -6,6 +6,7 @@ import NavCategorias from "../organisms/NavCategories";
 import ProductCard from "../molecules/ProductCard";
 import { getProducts } from "../../services/api";
 
+// Mapa nombre → imgClass (para ProductCard)
 const imgClassByNombre = {
   "Torta Cuadrada de Chocolate": "torta-cuadrada-chocolate",
   "Torta Cuadrada de Frutas": "torta-cuadrada-frutas",
@@ -13,6 +14,7 @@ const imgClassByNombre = {
   "Torta Circular de Vainilla": "torta-circular-vainilla",
   "Mousse de Chocolate": "mousse-chocolate",
   "Tiramisú Clásico": "tiramisu",
+  "Torta Sin Azúcar de Naranja": "torta-naranja-sin-azucar",
   "Torta sin Azúcar de Naranja": "torta-naranja-sin-azucar",
   "Cheesecake Sin Azúcar": "cheesecake-sin-azucar",
   "Empanada de Manzana": "empanada-manzana",
@@ -25,6 +27,7 @@ const imgClassByNombre = {
   "Torta Especial de Boda": "torta-boda",
 };
 
+// categorías que mostramos en la página
 const CATEGORIAS = [
   { id: "tortas-cuadradas", titulo: "Tortas Cuadradas", apiValue: "Tortas Cuadradas" },
   { id: "tortas-circulares", titulo: "Tortas Circulares", apiValue: "Tortas Circulares" },
@@ -35,6 +38,14 @@ const CATEGORIAS = [
   { id: "productos-veganos", titulo: "Productos Veganos", apiValue: "Productos Vegana" },
   { id: "tortas-especiales", titulo: "Tortas Especiales", apiValue: "Tortas Especiales" },
 ];
+
+// helper para comparar strings de categoría de forma robusta
+const normalize = (str) =>
+  (str || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // quita tildes
+    .toLowerCase()
+    .trim();
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -63,7 +74,11 @@ export default function Products() {
     if (loading) return <p>Cargando productos...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
-    const filtered = products.filter((p) => p.categoria === categoriaApi);
+    const catNorm = normalize(categoriaApi);
+
+    const filtered = products.filter(
+      (p) => normalize(p.categoria) === catNorm
+    );
 
     if (!filtered.length) {
       return <p>No hay productos disponibles en esta categoría.</p>;
@@ -80,7 +95,9 @@ export default function Products() {
               codigo={p.id}
               titulo={p.nombre}
               precio={`$${Number(p.precio).toLocaleString("es-CL")}`}
-              descripcion={p.descripcion || "Delicioso producto de nuestra pastelería."}
+              descripcion={
+                p.descripcion || "Delicioso producto de nuestra pastelería."
+              }
               imgClass={imgClass}
             />
           );

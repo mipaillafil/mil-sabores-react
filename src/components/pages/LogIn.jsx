@@ -23,7 +23,7 @@ export default function LogIn() {
       if (data.user.rol === "ADMIN") {
         navigate("/Perfil-Admin");
       } else {
-        navigate("/Perfil-Usuario");
+        navigate("/");
       }
     } catch (err) {
       setError("Correo o contraseña incorrectos");

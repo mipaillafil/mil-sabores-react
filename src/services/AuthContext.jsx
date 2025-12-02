@@ -4,8 +4,12 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(() => {
-    const saved = localStorage.getItem("auth");
-    return saved ? JSON.parse(saved) : null;
+    try {
+      const saved = localStorage.getItem("auth");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
   });
 
   const login = (data) => {
@@ -18,8 +22,16 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("auth");
   };
 
+  const value = {
+    auth,
+    user: auth?.user || null,
+    token: auth?.token || null,
+    login,
+    logout,
+  };
+
   return (
-    <AuthContext.Provider value={{ auth, login, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
