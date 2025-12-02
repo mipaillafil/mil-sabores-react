@@ -1759,27 +1759,27 @@ footer {
 
 /* Imágenes de los artículos del blog */
 .receta-torta-chocolate {
-    background-image: url('img/chocolate vegano.jpg');
+    background-image: url('/img/chocolate_vegano.jpg');
 }
 
 .consejo-decoracion {
-    background-image: url('img/torta decoracion.jpg');
+    background-image: url('/img/torta_decoracion.jpg');
 }
 
 .competencia-reposteria {
-    background-image: url('img/cocineros duoc.jpg');
+    background-image: url('/img/cocineros_duoc.jpg');
 }
 
 .receta-vegana {
-    background-image: url('img/brownie.jpg');
+    background-image: url('/img/brownie.jpg');
 }
 
 .tendencias-reposteria {
-    background-image: url('img/tendencias.jpg');
+    background-image: url('/img/tendencias.jpg');
 }
 
 .evento-taller {
-    background-image: url('img/deco cupcake.webp');
+    background-image: url('/img/deco_cupcake.webp');
 }
 
 .blog-content {
