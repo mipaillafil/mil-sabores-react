@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../services/AuthContext";
 import "./AdminProfile.css";
 
 // API real
@@ -8,7 +7,10 @@ import {
   getAdminProducts,
   getAdminUsers,
   createProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct,
+  deleteAdminUser,
+  updateAdminUser,
 } from "../../services/api";
 
 const AdminProfile = () => {
@@ -22,7 +24,7 @@ const AdminProfile = () => {
     pendingOrders: 0,
     todayRevenue: 0,
     monthlyRevenue: 2500000,
-    birthdayStudents: 0
+    birthdayStudents: 0,
   });
 
   const [orders, setOrders] = useState([]);
@@ -40,7 +42,7 @@ const AdminProfile = () => {
     }
   };
 
-  //CARGAR DATOS DESDE API REAL
+  // CARGAR DATOS DESDE API REAL
   useEffect(() => {
     const token = getToken();
     if (!token) {
@@ -62,7 +64,7 @@ const AdminProfile = () => {
         "Pastelería Tradicional",
         "Productos Sin Gluten",
         "Productos Vegana",
-        "Tortas Especiales"
+        "Tortas Especiales",
       ];
       setCategories(categoriesData);
 
@@ -74,8 +76,10 @@ const AdminProfile = () => {
         name: p.nombre,
         category: p.categoria,
         price: p.precio,
-        stock: 10, // sin stock en API → valor temporal
-        status: p.activo ? "activo" : "inactivo"
+        description: p.descripcion || "",
+        stock: 10,
+        active: !!p.activo,
+        status: p.activo ? "activo" : "inactivo",
       }));
 
       setProducts(mappedProducts);
@@ -90,7 +94,7 @@ const AdminProfile = () => {
         joinDate: u.fechaNacimiento,
         role: u.rol,
         status: "activo",
-        discount: null
+        discount: null,
       }));
 
       setUsers(mappedUsers);
@@ -99,13 +103,14 @@ const AdminProfile = () => {
       setStats((prev) => ({
         ...prev,
         totalProducts: mappedProducts.length,
-        totalUsers: mappedUsers.length
+        totalUsers: mappedUsers.length,
       }));
     } catch (err) {
       console.error("Error cargando datos:", err);
     }
   };
 
+  // CREAR PRODUCTO
   const handleAddProduct = async (newProduct) => {
     const token = getToken();
     if (!token) {
@@ -121,20 +126,23 @@ const AdminProfile = () => {
         name: created.nombre,
         category: created.categoria,
         price: created.precio,
+        description: created.descripcion || "",
         stock: 10,
-        status: created.activo ? "active" : "inactive"
+        active: !!created.activo,
+        status: created.activo ? "activo" : "inactivo",
       };
 
       setProducts((prev) => [...prev, mapped]);
       setStats((prev) => ({
         ...prev,
-        totalProducts: prev.totalProducts + 1
+        totalProducts: prev.totalProducts + 1,
       }));
     } catch (err) {
       alert("Error creando producto: " + err.message);
     }
   };
 
+  // ACTUALIZAR PRODUCTO (no lo usamos aún en la UI, pero lo dejamos listo)
   const handleUpdateProduct = async (productId, updatedProduct) => {
     const token = getToken();
     if (!token) {
@@ -149,12 +157,15 @@ const AdminProfile = () => {
         prev.map((p) =>
           p.id === productId
             ? {
-              id: updated.id,
-              name: updated.nombre,
-              category: updated.categoria,
-              price: updated.precio,
-              stock: p.stock
-            }
+                ...p,
+                id: updated.id,
+                name: updated.nombre,
+                category: updated.categoria,
+                price: updated.precio,
+                description: updated.descripcion || "",
+                active: !!updated.activo,
+                status: updated.activo ? "activo" : "inactivo",
+              }
             : p
         )
       );
@@ -163,12 +174,115 @@ const AdminProfile = () => {
     }
   };
 
+  // OCULTAR / MOSTRAR PRODUCTO
+  const handleToggleProductVisibility = async (productId) => {
+    const token = getToken();
+    if (!token) {
+      navigate("/Inicio-Sesion");
+      return;
+    }
+
+    const product = products.find((p) => p.id === productId);
+    if (!product) return;
+
+    const nuevoActivo = !product.active;
+
+    try {
+      const payload = {
+        nombre: product.name,
+        descripcion: product.description || "",
+        categoria: product.category,
+        precio: product.price,
+        activo: nuevoActivo,
+      };
+
+      const updated = await updateProduct(productId, payload, token);
+
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId
+            ? {
+                ...p,
+                active: !!updated.activo,
+                status: updated.activo ? "activo" : "inactivo",
+              }
+            : p
+        )
+      );
+    } catch (err) {
+      alert("Error al actualizar visibilidad: " + err.message);
+    }
+  };
+
+  // ELIMINAR PRODUCTO
+  const handleDeleteProduct = async (productId) => {
+    const token = getToken();
+    if (!token) {
+      navigate("/Inicio-Sesion");
+      return;
+    }
+
+    if (!window.confirm("¿Eliminar este producto definitivamente?")) return;
+
+    try {
+      await deleteProduct(productId, token);
+      setProducts((prev) => prev.filter((p) => p.id !== productId));
+      setStats((prev) => ({
+        ...prev,
+        totalProducts: Math.max(0, prev.totalProducts - 1),
+      }));
+    } catch (err) {
+      alert("Error al eliminar producto: " + err.message);
+    }
+  };
+
+  // CAMBIAR ROL (solo front por ahora)
   const handleUpdateUserRole = (userId, newRole) => {
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
     );
   };
 
+  // ACTIVAR / DESACTIVAR USUARIO (solo front, no pega a API)
+  const handleToggleUserStatus = (userId) => {
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId
+          ? {
+              ...u,
+              status: u.status === "activo" ? "inactivo" : "activo",
+            }
+          : u
+      )
+    );
+  };
+
+  // ELIMINAR USUARIO
+  const handleDeleteUser = async (userId, email, role) => {
+    if (email === "admin@milsabores.cl" || role === "ADMIN") {
+      alert("No puedes eliminar al administrador.");
+      return;
+    }
+
+    const token = getToken();
+    if (!token) {
+      navigate("/Inicio-Sesion");
+      return;
+    }
+
+    if (!window.confirm("¿Eliminar este usuario?")) return;
+
+    try {
+      await deleteAdminUser(userId, token);
+      setUsers((prev) => prev.filter((u) => u.id !== userId));
+      setStats((prev) => ({
+        ...prev,
+        totalUsers: Math.max(0, prev.totalUsers - 1),
+      }));
+    } catch (err) {
+      alert("Error al eliminar usuario: " + err.message);
+    }
+  };
 
   const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrders((prev) =>
@@ -213,37 +327,83 @@ const AdminProfile = () => {
       <div className="admin-content">
         {/* SIDEBAR */}
         <div className="admin-sidebar">
-          <button className={`tab-button ${activeTab === "dashboard" ? "active" : ""}`} onClick={() => setActiveTab("dashboard")}>
+          <button
+            className={`tab-button ${
+              activeTab === "dashboard" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("dashboard")}
+          >
             📊 Dashboard
           </button>
-          <button className={`tab-button ${activeTab === "orders" ? "active" : ""}`} onClick={() => setActiveTab("orders")}>
+          <button
+            className={`tab-button ${
+              activeTab === "orders" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("orders")}
+          >
             🛒 Gestión de Pedidos
           </button>
-          <button className={`tab-button ${activeTab === "products" ? "active" : ""}`} onClick={() => setActiveTab("products")}>
+          <button
+            className={`tab-button ${
+              activeTab === "products" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("products")}
+          >
             🍰 Gestión de Productos
           </button>
-          <button className={`tab-button ${activeTab === "users" ? "active" : ""}`} onClick={() => setActiveTab("users")}>
+          <button
+            className={`tab-button ${
+              activeTab === "users" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("users")}
+          >
             👥 Gestión de Usuarios
           </button>
-          <button className={`tab-button ${activeTab === "categories" ? "active" : ""}`} onClick={() => setActiveTab("categories")}>
+          <button
+            className={`tab-button ${
+              activeTab === "categories" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("categories")}
+          >
             🏷️ Categorías
           </button>
-          <button className={`tab-button ${activeTab === "discounts" ? "active" : ""}`} onClick={() => setActiveTab("discounts")}>
+          <button
+            className={`tab-button ${
+              activeTab === "discounts" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("discounts")}
+          >
             🎫 Sistema de Descuentos
           </button>
         </div>
 
         {/* BODY */}
         <div className="admin-main">
-          {activeTab === "dashboard" && <DashboardTab stats={stats} orders={orders} />}
+          {activeTab === "dashboard" && (
+            <DashboardTab stats={stats} orders={orders} />
+          )}
           {activeTab === "orders" && (
-            <OrdersTab orders={orders} onUpdateStatus={handleUpdateOrderStatus} />
+            <OrdersTab
+              orders={orders}
+              onUpdateStatus={handleUpdateOrderStatus}
+            />
           )}
           {activeTab === "products" && (
-            <ProductsTab products={products} onUpdate={handleUpdateProduct} onAdd={handleAddProduct} />
+            <ProductsTab
+              products={products}
+              onUpdate={handleUpdateProduct}
+              onAdd={handleAddProduct}
+              onHide={handleToggleProductVisibility}
+              onDelete={handleDeleteProduct}
+            />
           )}
           {activeTab === "users" && (
-            <UsersTab users={users} onUpdateRole={handleUpdateUserRole} />
+            <UsersTab
+              users={users}
+              onUpdateRole={handleUpdateUserRole}
+              onToggleStatus={handleToggleUserStatus}
+              onDeleteUser={handleDeleteUser}
+            />
           )}
           {activeTab === "categories" && (
             <CategoriesTab categories={categories} products={products} />
@@ -255,7 +415,6 @@ const AdminProfile = () => {
   );
 };
 
-
 const DashboardTab = ({ stats, orders }) => (
   <div className="tab-content">
     <h2>📊 Resumen General</h2>
@@ -263,17 +422,14 @@ const DashboardTab = ({ stats, orders }) => (
   </div>
 );
 
-
-
-
-// PRODUCTS — CONECTADO A API (POST + PUT)
-const ProductsTab = ({ products, onUpdate, onAdd }) => {
+// PRODUCTS — CONECTADO A API (POST + PUT + HIDE + DELETE)
+const ProductsTab = ({ products, onUpdate, onAdd, onHide, onDelete }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
     category: "",
     price: "",
-    stock: ""
+    stock: "",
   });
 
   const categories = [
@@ -284,7 +440,7 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
     "Pastelería Tradicional",
     "Productos Sin Gluten",
     "Productos Vegana",
-    "Tortas Especiales"
+    "Tortas Especiales",
   ];
 
   const handleSubmit = (e) => {
@@ -293,7 +449,7 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
       nombre: newProduct.name,
       categoria: newProduct.category,
       precio: Number(newProduct.price),
-      activo: true
+      activo: true,
     });
     setNewProduct({ name: "", category: "", price: "", stock: "" });
     setShowAddForm(false);
@@ -303,7 +459,10 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
     <div className="tab-content">
       <div className="tab-header">
         <h2>🍰 Gestión de Productos</h2>
-        <button className="btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
+        <button
+          className="btn-primary"
+          onClick={() => setShowAddForm(!showAddForm)}
+        >
           + Agregar Producto
         </button>
       </div>
@@ -316,12 +475,16 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
               type="text"
               placeholder="Nombre"
               value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
               required
             />
             <select
               value={newProduct.category}
-              onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, category: e.target.value })
+              }
               required
             >
               <option value="">Categoría</option>
@@ -335,7 +498,9 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
               type="number"
               placeholder="Precio"
               value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, price: e.target.value })
+              }
               required
             />
             <button className="btn-success">Guardar</button>
@@ -362,13 +527,21 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
                 <td>{p.name}</td>
                 <td>{p.category}</td>
                 <td>${p.price.toLocaleString("es-CL")}</td>
-                <td>{p.status}</td>
                 <td>
+                  <span
+                    className={`status-badge ${
+                      p.active ? "status-active" : "status-inactive"
+                    }`}
+                  >
+                    {p.active ? "Visible" : "Oculto"}
+                  </span>
+                </td>
+                <td className="actions">
                   <button
                     className="btn-warning"
                     onClick={() => onHide(p.id)}
                   >
-                    Ocultar
+                    {p.active ? "Ocultar" : "Mostrar"}
                   </button>
                   <button
                     className="btn-danger"
@@ -386,7 +559,12 @@ const ProductsTab = ({ products, onUpdate, onAdd }) => {
   );
 };
 
-const UsersTab = ({ users, onUpdateRole }) => (
+const UsersTab = ({
+  users,
+  onUpdateRole,
+  onToggleStatus,
+  onDeleteUser,
+}) => (
   <div className="tab-content">
     <h2>👥 Gestión de Usuarios</h2>
 
@@ -400,6 +578,7 @@ const UsersTab = ({ users, onUpdateRole }) => (
             <th>Registro</th>
             <th>Rol</th>
             <th>Estado</th>
+            <th>Acciones</th>
           </tr>
         </thead>
 
@@ -419,7 +598,37 @@ const UsersTab = ({ users, onUpdateRole }) => (
                   <option value="ADMIN">Administrador</option>
                 </select>
               </td>
-              <td>{u.status}</td>
+              <td>
+                <span
+                  className={`status-badge ${
+                    u.status === "activo"
+                      ? "status-active"
+                      : "status-inactive"
+                  }`}
+                >
+                  {u.status}
+                </span>
+              </td>
+              <td className="actions">
+                <button
+                  className="btn-warning"
+                  disabled={
+                    u.email === "admin@milsabores.cl" || u.role === "ADMIN"
+                  }
+                  onClick={() => onToggleStatus(u.id)}
+                >
+                  {u.status === "activo" ? "Desactivar" : "Activar"}
+                </button>
+                <button
+                  className="btn-danger"
+                  disabled={
+                    u.email === "admin@milsabores.cl" || u.role === "ADMIN"
+                  }
+                  onClick={() => onDeleteUser(u.id, u.email, u.role)}
+                >
+                  Eliminar
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -440,12 +649,18 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "pending": return "warning";
-      case "processing": return "info";
-      case "ready": return "primary";
-      case "completed": return "success";
-      case "cancelled": return "error";
-      default: return "default";
+      case "pending":
+        return "warning";
+      case "processing":
+        return "info";
+      case "ready":
+        return "primary";
+      case "completed":
+        return "success";
+      case "cancelled":
+        return "error";
+      default:
+        return "default";
     }
   };
 
@@ -470,7 +685,6 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
         </div>
       </div>
 
-      {/* MISMO ESTILO DE TABLAS QUE PRODUCTOS Y USUARIOS */}
       <div className="table-container">
         <table className="admin-table">
           <thead>
@@ -508,7 +722,11 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
                 <td>${order.total.toLocaleString("es-CL")}</td>
 
                 <td>
-                  <span className={`status-badge status-${getStatusColor(order.status)}`}>
+                  <span
+                    className={`status-badge status-${getStatusColor(
+                      order.status
+                    )}`}
+                  >
                     {order.status}
                   </span>
                 </td>
@@ -516,7 +734,9 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
                 <td>
                   <select
                     value={order.status}
-                    onChange={(e) => onUpdateStatus(order.id, e.target.value)}
+                    onChange={(e) =>
+                      onUpdateStatus(order.id, e.target.value)
+                    }
                     className="status-select"
                   >
                     <option value="pending">Pendiente</option>
@@ -537,8 +757,6 @@ const OrdersTab = ({ orders, onUpdateStatus }) => {
   );
 };
 
-
-
 // ================================================================================
 
 const CategoriesTab = ({ categories }) => (
@@ -554,14 +772,18 @@ const CategoriesTab = ({ categories }) => (
 
 // Componente Sistema de Descuentos
 const DiscountsTab = ({ users }) => {
-  const seniorUsers = users.filter(user => user.age > 50);
-  const studentUsers = users.filter(user => user.email.includes('duocuc.cl'));
-  const codeUsers = users.filter(user => user.discount && user.discount.includes('10%'));
+  const seniorUsers = users.filter((user) => user.age > 50);
+  const studentUsers = users.filter((user) =>
+    user.email.includes("duocuc.cl")
+  );
+  const codeUsers = users.filter(
+    (user) => user.discount && user.discount.includes("10%")
+  );
 
   return (
     <div className="tab-content">
       <h2>🎫 Sistema de Descuentos</h2>
-      
+
       <div className="discounts-grid">
         <div className="discount-card">
           <h3>👴 Descuento 50% Mayores de 50 años</h3>
@@ -608,7 +830,8 @@ const DiscountsTab = ({ users }) => {
           </div>
           <div className="config-item">
             <label>Porcentaje descuento adultos mayores:</label>
-            <input type="number" defaultValue="50" />%
+            <input type="number" defaultValue="50" />
+            %
           </div>
           <div className="config-item">
             <label>Dominios de correo estudiantil:</label>
