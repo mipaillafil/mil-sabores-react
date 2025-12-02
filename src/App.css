@@ -1951,7 +1951,7 @@ footer {
 
 /* CARRITO */
 .banner-carrito {
-    background: linear-gradient(#00000099, #00000099), url(img/torta-banner.jpg);
+    background: linear-gradient(#00000099, #00000099), url('/img/torta_banner.jpg');
     background-size: cover;
     background-position: center;
     height: 200px;
