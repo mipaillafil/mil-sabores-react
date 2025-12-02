@@ -359,25 +359,25 @@ header {
 }
 
 .tortas-cuadradas {
-    background: linear-gradient(#00000066, #00000066), url(img/torta\ cuadrada.jpg);
+    background: linear-gradient(#00000066, #00000066), url('/img/torta_cuadrada.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .tortas-circulares {
-    background: linear-gradient(#00000066, #00000066), url(img/torta\ circular.jpg);
+    background: linear-gradient(#00000066, #00000066), url('/img/torta_circular.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .postres {
-    background: linear-gradient(#00000066, #00000066), url(img/postres.jpg);
+    background: linear-gradient(#00000066, #00000066), url('/img/postres.jpg');
     background-size: cover;
     background-position: center;
 }
 
 .especial {
-    background: linear-gradient(#00000066, #00000066), url(img/vegano.jpeg);
+    background: linear-gradient(#00000066, #00000066), url('/img/vegano.jpeg');
     background-size: cover;
     background-position: center;
 }
@@ -903,7 +903,7 @@ footer {
 }
 
 .banner {
-    background: linear-gradient(#00000080, #00000080), url('img/torta-banner.jpg');
+    background: linear-gradient(#00000080, #00000080), url('/img/torta_banner.jpg');
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -976,20 +976,20 @@ footer {
 /* imágenes de fondo */
 /* Tortas Cuadradas */
 .torta-cuadrada-chocolate {
-    background-image: url('img/torta-chocolate.jpg');
+    background-image: url('img/torta_chocolate.jpg');
 }
 
 .torta-cuadrada-frutas {
-    background-image: url('img/torta\ cuadrada.jpg');
+    background-image: url('img/torta_cuadrada.jpg');
 }
 
 /* Tortas Circulares */
 .torta-circular-manjar {
-    background-image: url('img/torta\ manjar\ v2.jpg');
+    background-image: url('img/torta_manjar_v2.jpg');
 }
 
 .torta-circular-vainilla {
-    background-image: url('img/torta-vainilla.jpg');
+    background-image: url('img/torta_vainilla.jpg');
 }
 
 /* Postres Individuales */
