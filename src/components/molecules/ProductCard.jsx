@@ -1,12 +1,10 @@
 import React from "react";
 
-export default function ProductCard(props){
-  const{codigo, titulo, precio, descripcion, imgClass}=props
+export default function ProductCard(props) {
+  const { codigo, titulo, precio, descripcion, imgClass } = props;
 
-
-  
-  /*para cargar imagenes*/
-   const imgMap = {
+  /* PARA CARGAR IMÁGENES */
+  const imgMap = {
     'torta-cuadrada-chocolate': 'img/torta-chocolate.jpg',
     'torta-cuadrada-frutas': 'img/torta cuadrada.jpg',
     'torta-circular-manjar': 'img/torta manjar v2.jpg',
@@ -26,29 +24,38 @@ export default function ProductCard(props){
   };
 
   const productWithImg = {
-    ...props,
-    img: imgMap[props.imgClass] || '', // ruta de imagen
+    codigo,
+    titulo,
+    precio,
+    descripcion,
+    imgClass,
+    img: imgMap[imgClass] || "",
+    quantity: 1, // necesario para Cart.jsx
   };
 
-  function addToCart(){
-    const products=JSON.parse(localStorage.getItem('products')) || []
-    products.push(productWithImg)
-    localStorage.setItem('products',JSON.stringify(products))
-    console.log(products)
+  function addToCart() {
+    const current = JSON.parse(localStorage.getItem("products")) || [];
+    current.push(productWithImg);
+    localStorage.setItem("products", JSON.stringify(current));
+    window.dispatchEvent(new Event("cart-updated"));
+
+    console.log("Producto agregado:", productWithImg);
   }
 
   return (
     <div className="producto-card">
       <div className={`producto-img ${imgClass}`}></div>
+
       <div className="info">
         <p className="codigo-producto">Código: {codigo}</p>
         <h3 className="titulo-producto">{titulo}</h3>
         <p className="precio">{precio}</p>
         <p className="descripcion">{descripcion}</p>
-        <button onClick={()=>addToCart()}>Agregar al carrito</button>
+
+        <button onClick={addToCart}>
+          Agregar al carrito
+        </button>
       </div>
     </div>
   );
 }
-
-

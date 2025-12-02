@@ -16,12 +16,15 @@ export default function Cart() {
       quantity: p.quantity || 1,
     }));
     setProducts(productsWithQuantity);
+
+    window.dispatchEvent(new Event('cart-updated'));
   }, []);
 
   // guarda los cambios en localStorage
   const saveProducts = (updatedProducts) => {
     setProducts(updatedProducts);
     localStorage.setItem('products', JSON.stringify(updatedProducts));
+    window.dispatchEvent(new Event('cart-updated'));
   };
 
   // Elimina el producto
@@ -43,7 +46,11 @@ export default function Cart() {
   };
 
   // Sumar precio * cantidad
-  const parsePrecio = (precio) => parseInt(precio.replace(/\$|\./g, ''), 10);
+  const parsePrecio = (precio) =>
+    typeof precio === 'number'
+      ? precio
+      : parseInt(precio.replace(/\$|\./g, ''), 10);
+
   const subtotal = products.reduce(
     (acc, item) => acc + parsePrecio(item.precio) * item.quantity,
     0
@@ -54,11 +61,11 @@ export default function Cart() {
   const formatCLP = (num) =>
     num.toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
 
-const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
-const irAProcesarCompra = () => {
+  const irAProcesarCompra = () => {
     navigate('/Procesar-Compra');
-};
+  };
 
   return (
     <>
@@ -95,7 +102,11 @@ const irAProcesarCompra = () => {
                     <h3>{item.titulo}</h3>
                     <p>{item.descripcion}</p>
                     <p>
-                      <strong>{item.precio}</strong>
+                      <strong>
+                        {typeof item.precio === 'number'
+                          ? formatCLP(item.precio)
+                          : item.precio}
+                      </strong>
                     </p>
 
                     {/* Controles de cantidad */}
@@ -136,7 +147,9 @@ const irAProcesarCompra = () => {
               <span>
                 Descuento <span className="descuento">-30%</span>
               </span>
-              <span style={{ color: '#4CAF50' }}>-{formatCLP(descuento)}</span>
+              <span style={{ color: '#4CAF50' }}>
+                -{formatCLP(descuento)}
+              </span>
             </div>
 
             <div className="resumen-item">
@@ -157,7 +170,9 @@ const irAProcesarCompra = () => {
               </div>
             </div>
 
-            <button className="btn-pago" onClick={irAProcesarCompra}>Proceder al Pago</button>
+            <button className="btn-pago" onClick={irAProcesarCompra}>
+              Proceder al Pago
+            </button>
             <a href="/productos" className="continuar-compra">
               ← Seguir comprando
             </a>

@@ -890,7 +890,7 @@ footer {
 .carrito-icono span {
     position: absolute;
     top: 20px;
-    background-color: #FFC0CB;
+    background-color: #f1052d;
     color: #fff;
     border-radius: 50%;
     width: 20px;
@@ -4453,4 +4453,64 @@ footer {
   border: none;
   cursor: pointer;
   font-size: 18px;
+}
+
+/*cantidad carrito*/
+
+.cart-link {
+  position: relative;
+  font-size: 22px;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff7ec;
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #ff9e40;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.logout-btn {
+  border: none;
+  background: transparent;
+  color: #b54b3a;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
